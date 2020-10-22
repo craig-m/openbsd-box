@@ -4,7 +4,7 @@
   "min_packer_version": "1.5.5",
 
   "variables": {
-    "box_version": "6.8.20201021",
+    "box_version": "6.8.20201022",
     "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
     "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
     "ssh_user_name": "root",
@@ -90,6 +90,7 @@
     "vrdp_bind_address": "127.0.0.1",
     "vrdp_port_min": 11000,
     "vrdp_port_max": 12000,
+    "virtualbox_version_file": ".vbox_version",
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
       [ "modifyvm", "{{.Name}}", "--natdnshostresolver1", "on" ]

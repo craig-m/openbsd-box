@@ -1,3 +1,7 @@
+#
+# OpenBSD Vagrantfile template
+#
+
 Vagrant.require_version ">= 2.2.9"
 
 # openbsd VM options
@@ -21,7 +25,6 @@ SCRIPT
 
 
 Vagrant.configure("2") do |config|
-
 
     #
     # Box and VM config
@@ -60,13 +63,11 @@ Vagrant.configure("2") do |config|
         vbox.name = "openbsd"
         vbox.gui = false
         vbox.check_guest_additions = false
-        vbox.network "private_network", type: "dhcp", name: "vboxnet3"
     end
 
     # --- Libvirt ---
     config.vm.provider :libvirt do |libv, override|
         libv.disk_bus = "virtio"
-        #config.vagrant.plugins = ["vagrant-libvirt"]
     end
 
     # --- VMWare ---
@@ -80,6 +81,19 @@ Vagrant.configure("2") do |config|
             vmw.vmx["numvcpus"] = "2"
         end
     end
+
+    #
+    # provision tasks
+    #
+
+    config.vm.provision :shell,
+        inline: "echo 'Hello, vm.provision tasks running.'"
+
+    config.vm.provision :shell,
+        :privileged => true, 
+        :path => "scripts/base.sh",
+        :binary => true, 
+        name: "vagrant vm"
 
 
     #

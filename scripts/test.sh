@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Testing script"
-sleep 3s
+sleep 3
 
 set -e
 set -x
