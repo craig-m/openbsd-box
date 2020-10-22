@@ -90,11 +90,7 @@
     "vrdp_bind_address": "127.0.0.1",
     "vrdp_port_min": 11000,
     "vrdp_port_max": 12000,
-    "virtualbox_version_file": ".vbox_version",
-    "vboxmanage": [
-      [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
-      [ "modifyvm", "{{.Name}}", "--natdnshostresolver1", "on" ]
-    ]
+    "virtualbox_version_file": ".vbox_version"
   },
 
   {
