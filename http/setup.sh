@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ksh
 
 echo "OpenBSD setup.sh setup script"
 sleep 1s

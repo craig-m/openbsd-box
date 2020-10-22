@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ksh
 
 echo "Testing script"
 sleep 3
