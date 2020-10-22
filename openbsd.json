@@ -25,6 +25,7 @@
     "type": "hyperv-iso",
     "name": "openbsd-hv",
     "vm_name": "openbsd-hv",
+
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "boot_wait": "40s",
@@ -61,6 +62,7 @@
     "type": "virtualbox-iso",
     "name": "openbsd-vb",
     "vm_name": "openbsd-vb",
+
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "boot_wait": "20s",
@@ -98,6 +100,7 @@
     "type": "qemu",
     "name": "openbsd-qu",
     "vm_name": "openbsd-qu",
+
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "boot_wait": "40s",

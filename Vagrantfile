@@ -42,20 +42,16 @@ Vagrant.configure("2") do |config|
         #
         # ------ Windows Hyper-V ------
         mainvm.vm.provider :hyperv do |hpv, override|
-            # vm sys:
             hpv.memory = MY_VM_RAM
             hpv.maxmemory = MY_VM_RAM
             hpv.cpus = MY_VM_CPU
-            # network:
             config.vm.network "public_network", bridge: "PackerSwitch"
             config.vm.network "private_network", bridge: "PackerSwitch"
-            # file shares:
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #
         # ------ Libvirt ------
         config.vm.provider :libvirt do |libv, override|
-            # file shares:
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #
@@ -65,8 +61,7 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
-            # network:
-            vbox.network "private_network", type: "dhcp", name: "vboxnet3"
+            override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #
     end

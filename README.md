@@ -7,18 +7,21 @@ An OpenBSD learning/play setup, powered by Packer and Vagrant.
 To first create the Vagrant box image.
 
 **HyperV**
+Windows 10:
 
 ```
 packer build -only=openbsd-hv openbsd.json
 ```
 
 **VirtualBox**
+MacOS, Windows, Linux:
 
 ```
 packer build -only=openbsd-vb openbsd.json
 ```
 
 **QEMU**
+MacOS, Windows, Linux:
 
 ```
 packer build -only=openbsd-qu openbsd.json
@@ -38,7 +41,9 @@ vagrant ssh
 Learn OpenBSD.
 
 ```
-man firstboot
+man afterboot
+man intro
+man security
 ```
 
 ## links

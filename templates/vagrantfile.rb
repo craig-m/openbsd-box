@@ -1,5 +1,3 @@
-# This Vagrantfile is packaged with the box.
-
 Vagrant.require_version ">= 2.2.9"
 
 # openbsd VM options
@@ -31,7 +29,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "{{ .BoxName }}"
 
-    config.vm.hostname = "centos8vm"
+    config.vm.hostname = "openbsd"
     config.vm.box_check_update = false
     config.vm.boot_timeout = 300
     config.ssh.username = "root"
@@ -48,7 +46,6 @@ Vagrant.configure("2") do |config|
 
     #
     # VM provider specific configs
-    # https://www.vagrantup.com/docs/multi-machine/
     #
 
     # --- Hyper-V ---
@@ -63,6 +60,7 @@ Vagrant.configure("2") do |config|
         vbox.name = "openbsd"
         vbox.gui = false
         vbox.check_guest_additions = false
+        vbox.network "private_network", type: "dhcp", name: "vboxnet3"
     end
 
     # --- Libvirt ---
@@ -88,22 +86,17 @@ Vagrant.configure("2") do |config|
     # SSH Port Forwards
     #
 
-    #config.vm.define "centos8vm" do |mainvm|
-    #    config.vm.network :forwarded_port,
-    #        guest: 8989, host: 8989,
-    #        auto_correct: true,
-    #        id: 'webalt'
-    #end
+    config.vm.define "openbsd" do |mainvm|
+        config.vm.network :forwarded_port, guest: 2217, host: 2217, auto_correct: true, id: 'ssh2'
+    end
 
 
     #
     # action Triggers
-    # https://www.vagrantup.com/docs/triggers/
     #
 
     config.trigger.after [:up, :provision, :resume, :reload] do |t|
-        t.run_remote = {inline: $inlinescript_post, 
-            :privileged => false}
+        t.run_remote = {inline: $inlinescript_post, :privileged => false}
     end
 
 
