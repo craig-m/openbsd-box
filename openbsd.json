@@ -1,0 +1,193 @@
+{
+
+  "_comment_m": "OpenBSD Vagrant VM",
+  "min_packer_version": "1.5.5",
+
+  "variables": {
+    "box_version": "6.8.20201021",
+    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
+    "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
+    "ssh_user_name": "root",
+    "ssh_user_pass": "rootpass",
+    "ssh_port": "22",
+    "ssh_timeout": "7200s",
+    "http_dir": "http/",
+    "shutdown_cmd": "shutdown -h -p now",
+    "headless": "false",
+    "vm_disk": "32768",
+    "vm_cpus": "2",
+    "vm_mem": "2048"
+  },
+
+  "builders": [
+
+  {
+    "type": "hyperv-iso",
+    "name": "openbsd-hv",
+    "vm_name": "openbsd-hv",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "boot_wait": "40s",
+    "boot_command": [
+      "S<enter><wait>",
+      "dhclient hvn0<enter><wait5>",
+      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
+    ],
+    "disk_size": "{{user `vm_disk`}}",
+    "memory": "{{user `vm_mem`}}",
+    "cpus": "{{user `vm_cpus`}}",
+    "communicator": "ssh",
+    "ssh_username": "{{user `ssh_user_name`}}",
+    "ssh_password": "{{user `ssh_user_pass`}}",
+    "ssh_port": "{{user `ssh_port`}}",
+    "ssh_timeout": "{{user `ssh_timeout`}}",
+    "shutdown_command": "{{user `shutdown_cmd`}}",
+    "http_directory": "{{user `http_dir`}}",
+    "headless": "{{user `headless`}}",
+
+    "generation": 1,
+    "mac_address": "9c0a914daaff",
+    "skip_compaction": false,
+    "enable_secure_boot": false,
+    "enable_mac_spoofing": false,
+    "enable_dynamic_memory": false,
+    "guest_additions_mode": "disable",
+    "enable_virtualization_extensions": false
+  },
+
+  {
+    "type": "virtualbox-iso",
+    "name": "openbsd-vb",
+    "vm_name": "openbsd-vb",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "boot_wait": "20s",
+    "boot_command": [
+      "S<enter><wait>",
+      "dhclient em0<enter><wait5>",
+      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
+    ],
+    "disk_size": "{{user `vm_disk`}}",
+    "memory": "{{user `vm_mem`}}",
+    "cpus": "{{user `vm_cpus`}}",
+    "communicator": "ssh",
+    "ssh_username": "{{user `ssh_user_name`}}",
+    "ssh_password": "{{user `ssh_user_pass`}}",
+    "ssh_port": "{{user `ssh_port`}}",
+    "ssh_timeout": "{{user `ssh_timeout`}}",
+    "shutdown_command": "{{user `shutdown_cmd`}}",
+    "http_directory": "{{user `http_dir`}}",
+    "headless": "{{user `headless`}}",
+
+    "guest_os_type": "OpenBSD_64",
+    "guest_additions_mode": "disable",
+    "vrdp_bind_address": "127.0.0.1",
+    "vrdp_port_min": 11000,
+    "vrdp_port_max": 12000,
+    "vboxmanage": [
+      [ "modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
+      [ "modifyvm", "{{.Name}}", "--natdnshostresolver1", "on" ]
+    ]
+  },
+
+  {
+    "type": "qemu",
+    "name": "openbsd-qu",
+    "vm_name": "openbsd-qu",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "boot_wait": "40s",
+    "boot_command": [
+      "S<enter><wait>",
+      "dhclient hvn0<enter><wait5>",
+      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
+    ],
+    "disk_size": "{{user `vm_disk`}}",
+    "memory": "{{user `vm_mem`}}",
+    "cpus": "{{user `vm_cpus`}}",
+    "communicator": "ssh",
+    "ssh_username": "{{user `ssh_user_name`}}",
+    "ssh_password": "{{user `ssh_user_pass`}}",
+    "ssh_port": "{{user `ssh_port`}}",
+    "ssh_timeout": "7200s",
+    "shutdown_command": "{{user `shutdown_cmd`}}",
+    "http_directory": "{{user `http_dir`}}",
+    "headless": "{{user `headless`}}",
+
+    "format": "qcow2",
+    "accelerator": "kvm",
+    "net_device": "virtio-net",
+    "disk_interface": "virtio",
+    "disk_compression": true
+  }
+  ],
+
+  "provisioners": [
+
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} ksh '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh"
+      ],
+      "expect_disconnect": false
+    },
+
+    {
+      "type": "shell",
+      "inline": [
+        "reboot"
+      ],
+      "expect_disconnect": true,
+      "pause_before": "5s",
+      "timeout": "30s"
+    },
+
+    {
+      "type": "shell",
+      "execute_command": "ksh '{{.Path}}'",
+      "scripts": [
+        "scripts/test.sh"
+      ],
+      "pause_before": "5s",
+      "expect_disconnect": false
+    }
+  ],
+
+
+  "post-processors": [
+
+    {
+      "type": "artifice",
+      "files": [
+          "output-openbsd-vb/openbsd-disk001.vmdk",
+          "output-openbsd-vb/vbox-openbsd.ovf"
+        ]
+    },
+
+    {
+      "type": "vagrant",
+      "compression_level": 9,
+      "keep_input_artifact": true,
+      "vagrantfile_template": "templates/vagrantfile.rb",
+      "output": "boxes/OpenBSD.box",
+      "include": [
+        "templates/info.json",
+        "scripts/test.sh"
+      ]
+    },
+
+    {
+      "type": "checksum",
+      "checksum_types": "sha256",
+      "output": "boxes/{{.BuildName}}.{{user `box_version`}}.{{.ChecksumType}}.checksum"
+    }
+  ]
+
+}
