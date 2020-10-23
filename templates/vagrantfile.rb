@@ -63,6 +63,7 @@ Vagrant.configure("2") do |config|
         vbox.name = "openbsd"
         vbox.gui = false
         vbox.check_guest_additions = false
+        config.vm.network "private_network", type: "dhcp"
     end
 
     # --- Libvirt ---

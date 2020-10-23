@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     config.ssh.password = "puffypass"
     config.ssh.insert_key = true
     config.ssh.keep_alive = true
-    config.ssh.shell = "/bin/sh"
+    config.ssh.shell = "/bin/ksh"
     config.ssh.forward_agent = false
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
@@ -61,6 +61,7 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
+            config.vm.network "public_network", :type => 'dhcp', :name => 'vboxnet0', :adapter => 2
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #
