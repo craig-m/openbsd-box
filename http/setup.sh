@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 echo "OpenBSD setup.sh setup script"
-sleep 1s
+sleep 1
 
 set -e
 set -x
@@ -12,8 +12,7 @@ mkdir /opt
 chmod 770 /opt
 touch -f /opt/vmsetup.log
 
-# sudo
-
+# install sudo
 pkg_add sudo--
 mkdir /etc/sudoers.d
 
@@ -35,10 +34,10 @@ chmod 440 /etc/sudoers.d/root
 chmod 440 /etc/sudoers.d/puffy
 
 # user files
-
 chmod 750 /home/puffy
 chown puffy:puffy /opt
 
+# allow root ssh login
 sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 
 thetime=$(date +"%b %e %H:%M:%S")

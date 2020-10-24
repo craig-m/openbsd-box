@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
         # provider specific conf
         #
         # ------ Windows Hyper-V ------
-        mainvm.vm.provider :hyperv do |hpv, override|
+        config.vm.provider :hyperv do |hpv, override|
             hpv.memory = MY_VM_RAM
             hpv.maxmemory = MY_VM_RAM
             hpv.cpus = MY_VM_CPU
@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
-            config.vm.network "public_network", :type => 'dhcp', :name => 'vboxnet0', :adapter => 2
+            config.vm.network "private_network", type: "dhcp"
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #

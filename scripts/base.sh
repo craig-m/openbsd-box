@@ -20,7 +20,7 @@ rcctl disable sndiod
 
 # install some packages
 pkg_add -uUv
-pkg_add -I dmidecode curl wget vim--no_x11 rsync--
+pkg_add -I dmidecode curl vim--no_x11 rsync--
 
 # done
 thetime=$(date +"%b %e %H:%M:%S")

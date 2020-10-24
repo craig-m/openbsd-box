@@ -36,6 +36,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = false
     config.vm.boot_timeout = 300
     config.ssh.username = "root"
+    config.ssh.password = "puffypass"
     config.ssh.guest_port = 22
     config.ssh.insert_key = true
     config.ssh.keep_alive = true
