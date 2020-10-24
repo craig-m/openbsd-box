@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
-            config.vm.network "private_network", type: "dhcp"
+            config.vm.network "public_network", ip: "10.0.0.2"
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #

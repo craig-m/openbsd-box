@@ -42,6 +42,7 @@ Vagrant.configure("2") do |config|
     config.ssh.keep_alive = true
     config.ssh.forward_agent = false
     config.ssh.compression = false
+    config.ssh.shell = "/bin/ksh"
 
     def is_windows
         RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
