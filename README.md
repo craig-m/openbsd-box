@@ -34,22 +34,27 @@ MacOS, Windows, Linux:
 packer build -only=openbsd-qu -force openbsd.json
 ```
 
-(not tested)
+(builds OK)
 
 ## run
 
-start the system and login:
+Start the VM:
 
-```
+```shell
 vagrant up
-vagrant ssh
 ```
 
 ## use
 
+Login:
+
+```shell
+vagrant ssh
+```
+
 Learn OpenBSD.
 
-```
+```shell
 man afterboot
 man intro
 man security

@@ -1,5 +1,7 @@
 .vagrant/
 output-openbsd-hv/
 output-openbsd-vb/
+output-openbsd-qu/
 boxes/
 packer_cache/
+keys/*

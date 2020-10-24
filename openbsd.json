@@ -100,11 +100,11 @@
 
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
-    "boot_wait": "40s",
+    "boot_wait": "30s",
     "boot_command": [
       "S<enter><wait>",
-      "dhclient hvn0<enter><wait5>",
-      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+      "dhclient vio0<enter><wait5>",
+      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install_qemu.conf<enter><wait>",
       "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
       "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
     ],

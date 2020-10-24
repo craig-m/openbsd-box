@@ -15,8 +15,8 @@ rcctl stop sndiod
 rcctl disable sndiod
 
 # update Drivers + OS
-#fw_update
-#syspatch
+fw_update
+syspatch
 
 # install some packages
 pkg_add -uUv
