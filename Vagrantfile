@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
         :privileged => true, 
         :path => "scripts/base.sh",
         :binary => true, 
-        name: "vagrant vm"
+        name: "vagrant vm base"
 
 end
 

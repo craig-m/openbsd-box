@@ -14,10 +14,6 @@ rcctl disable smtpd
 rcctl stop sndiod
 rcctl disable sndiod
 
-# update Drivers + OS
-fw_update
-syspatch
-
 # install some packages
 pkg_add -uUv
 pkg_add -I dmidecode curl vim--no_x11 rsync--
