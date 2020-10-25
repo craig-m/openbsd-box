@@ -6,9 +6,19 @@ An OpenBSD learning/play setup, powered by Packer and Vagrant.
 
 To first create the Vagrant box image.
 
+```shell
+packer validate openbsd.json
+```
+
 ### HyperV
 
-Windows 10:
+Set debug (powershell only):
+
+```shell
+$env:PACKER_LOG=1
+```
+
+Windows 10 build:
 
 ```shell
 packer build -only=openbsd-hv -force openbsd.json
@@ -17,6 +27,12 @@ packer build -only=openbsd-hv -force openbsd.json
 (working + tested)
 
 ### VirtualBox
+
+Debug (Mac/Linux only):
+
+```shell
+export PACKER_LOG=1
+```
 
 MacOS, Windows, Linux:
 
@@ -51,6 +67,7 @@ packer build -only=openbsd-vw -force openbsd.json
 Start the VM:
 
 ```shell
+vagrant validate Vagrantfile
 vagrant up
 ```
 
