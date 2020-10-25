@@ -7,10 +7,16 @@ set -e
 set -x
 
 # filestore
-
 mkdir /opt
 chmod 770 /opt
 touch -f /opt/vmsetup.log
+echo "starting setup.sh" >> /opt/vmsetup.log
+
+# box info
+touch -f /opt/box_info.txt
+echo $MY_BOX_VER >> /opt/box_info.txt
+echo $MY_ISO_URL >> /opt/box_info.txt
+echo $MY_ISO_SUM >> /opt/box_info.txt
 
 # install sudo
 pkg_add sudo--
@@ -39,6 +45,9 @@ chown puffy:puffy /opt
 
 # allow root ssh login
 sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+
+sleep 1
+sync
 
 thetime=$(date +"%b %e %H:%M:%S")
 echo "${thetime} setup.sh finished" >> /opt/vmsetup.log

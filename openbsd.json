@@ -4,20 +4,21 @@
   "min_packer_version": "1.5.5",
 
   "variables": {
-    "box_version": "6.8.20201022",
+    "box_version": "6.8.20201025",
     "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
     "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
     "ssh_user_name": "root",
     "ssh_user_pass": "rootpass",
     "ssh_port": "22",
     "ssh_timeout": "7200s",
-    "http_dir": "http/",
+    "http_dir": "packer-http/",
     "shutdown_cmd": "shutdown -h -p now",
     "headless": "false",
     "vm_disk": "32768",
     "vm_cpus": "2",
     "vm_mem": "2048"
   },
+
 
   "builders": [
 
@@ -94,6 +95,43 @@
   },
 
   {
+    "type": "vmware-iso",
+    "name": "openbsd-vw",
+    "vm_name": "openbsd-vw",
+
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "boot_wait": "30s",
+    "boot_command": [
+      "S<enter><wait>",
+      "dhclient vio0<enter><wait5>",
+      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
+      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
+    ],
+    "disk_size": "{{user `vm_disk`}}",
+    "memory": "{{user `vm_mem`}}",
+    "cpus": "{{user `vm_cpus`}}",
+    "communicator": "ssh",
+    "ssh_username": "{{user `ssh_user_name`}}",
+    "ssh_password": "{{user `ssh_user_pass`}}",
+    "ssh_port": "{{user `ssh_port`}}",
+    "ssh_timeout": "7200s",
+    "shutdown_command": "{{user `shutdown_cmd`}}",
+    "http_directory": "{{user `http_dir`}}",
+    "headless": "{{user `headless`}}",
+
+    "vmx_data": {
+      "ethernet0.present": "TRUE",
+      "ethernet0.networkName": "VM Network",
+      "ethernet0.wakeOnPcktRcv": "FALSE",
+      "ethernet0.addressType": "generated",
+      "remotedisplay.vnc.enabled": "TRUE",
+      "vhv.enable": "TRUE"
+    }
+  },
+
+  {
     "type": "qemu",
     "name": "openbsd-qu",
     "vm_name": "openbsd-qu",
@@ -128,6 +166,7 @@
   }
   ],
 
+
   "provisioners": [
 
     {
@@ -135,6 +174,11 @@
       "execute_command": "{{.Vars}} ksh '{{.Path}}'",
       "scripts": [
         "scripts/base.sh"
+      ],
+      "environment_vars": [
+        "MY_BOX_VER={{user `box_version`}}",
+        "MY_ISO_URL={{user `iso_url`}}",
+        "MY_ISO_SUM={{user `iso_checksum`}}"
       ],
       "expect_disconnect": false
     },

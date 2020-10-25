@@ -3,5 +3,25 @@
     "Website": "crgm.net",
     "Artifacts": "https://github.com/craig-m/",
     "Repository": "https://github.com/craig-m/",
-    "Description": "OpenBSD Packer and Vagrant setup."
+    "name": "openbsd",
+    "Description": "OpenBSD Packer and Vagrant setup.",
+    "versions": [
+        {
+        "version": "6.8.20201025",
+        "providers": [
+            {
+                "name": "virtualbox-iso",
+                "box_url": "boxes/OpenBSD.box"
+            },
+            {
+                "name": "qemu",
+                "box_url": "boxes/OpenBSD.box"
+            },
+            {
+                "name": "hyperv-iso",
+                "box_url": "boxes/OpenBSD.box"
+            }
+        ]
+        }
+    ]
 }

@@ -18,8 +18,8 @@ CODE_MNT_OPT = ["dmode=775,fmode=644"]
 # inline script used by action trigger
 $inlinescript_post = <<-SCRIPT
 echo '-------------------------------------------------------------------';
-echo 'Hello, welcome to'
-uname -a;
+echo 'Hello'
+uname -a
 echo '-------------------------------------------------------------------';
 SCRIPT
 
@@ -86,29 +86,6 @@ Vagrant.configure("2") do |config|
     end
 
     #
-    # provision tasks
-    #
-
-    config.vm.provision :shell,
-        inline: "echo 'Hello, vm.provision tasks running.'"
-
-    config.vm.provision :shell,
-        :privileged => true, 
-        :path => "scripts/base.sh",
-        :binary => true, 
-        name: "vagrant vm"
-
-
-    #
-    # SSH Port Forwards
-    #
-
-    config.vm.define "openbsd" do |mainvm|
-        config.vm.network :forwarded_port, guest: 2217, host: 2217, auto_correct: true, id: 'ssh2'
-    end
-
-
-    #
     # action Triggers
     #
 
@@ -120,7 +97,7 @@ Vagrant.configure("2") do |config|
     #
     # Finished
     #
-    config.vm.post_up_message = "----- OpenBSD up -----"
+    config.vm.post_up_message = "----- OpenBSD box up -----"
 end
 
 # -*- mode: ruby -*-
