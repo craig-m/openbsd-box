@@ -11,15 +11,18 @@
         "providers": [
             {
                 "name": "virtualbox-iso",
-                "box_url": "boxes/OpenBSD.box"
+                "box_url": "boxes/OpenBSD.box",
+                "box_version": "6.8.20201025"
             },
             {
                 "name": "qemu",
-                "box_url": "boxes/OpenBSD.box"
+                "box_url": "boxes/OpenBSD.box",
+                "box_version": "6.8.20201025"
             },
             {
                 "name": "hyperv-iso",
-                "box_url": "boxes/OpenBSD.box"
+                "box_url": "boxes/OpenBSD.box",
+                "box_version": "6.8.20201025"
             }
         ]
         }

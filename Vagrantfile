@@ -17,8 +17,9 @@ CODE_MNT_OPT = ["dmode=775,fmode=644"]
 Vagrant.configure("2") do |config|
 
     #
-    # Box and VM config
+    # OpenBSD Box and VM config
     #
+
     config.vm.box = "openbsd"
     config.vm.box_url = "file://boxes/OpenBSD.box"
     config.vm.box_check_update = false

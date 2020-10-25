@@ -175,6 +175,7 @@
       "scripts": [
         "scripts/base.sh"
       ],
+      "timeout": "10m",
       "environment_vars": [
         "MY_BOX_VER={{user `box_version`}}",
         "MY_ISO_URL={{user `iso_url`}}",
@@ -199,6 +200,7 @@
       "scripts": [
         "scripts/test.sh"
       ],
+      "timeout": "5m",
       "pause_before": "5s",
       "expect_disconnect": false
     }

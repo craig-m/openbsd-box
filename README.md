@@ -1,6 +1,6 @@
 # OpenBSD-box
 
-An OpenBSD learning/play setup, powered by Packer and Vagrant.
+An OpenBSD 6.8 learning/play setup, powered by Packer and Vagrant.
 
 ## build
 
@@ -8,6 +8,7 @@ To first create the Vagrant box image.
 
 ```shell
 packer validate openbsd.json
+packer inspect openbsd.json
 ```
 
 ### HyperV

@@ -65,6 +65,9 @@ Vagrant.configure("2") do |config|
         vbox.name = "openbsd"
         vbox.gui = false
         vbox.check_guest_additions = false
+        # custom options
+        vbox.customize ["modifyvm", :id, "--audioout", "off"]
+        vbox.customize ["modifyvm", :id, "--vram", 32]
     end
 
     # --- Libvirt ---
@@ -96,7 +99,9 @@ Vagrant.configure("2") do |config|
     #
     # Finished
     #
+
     config.vm.post_up_message = "----- OpenBSD box up -----"
+
 end
 
 # -*- mode: ruby -*-
