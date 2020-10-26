@@ -11,13 +11,21 @@ packer validate openbsd.json
 packer inspect openbsd.json
 ```
 
-### HyperV
+### packer debug
 
-Set debug (powershell only):
+Set debug on Windows (powershell):
 
 ```shell
 $env:PACKER_LOG=1
 ```
+
+Debug on Mac/Linux/BSD:
+
+```shell
+export PACKER_LOG=1
+```
+
+#### HyperV
 
 Windows 10 build:
 
@@ -27,13 +35,7 @@ packer build -only=openbsd-hv -force openbsd.json
 
 (working + tested)
 
-### VirtualBox
-
-Debug (Mac/Linux only):
-
-```shell
-export PACKER_LOG=1
-```
+#### VirtualBox
 
 MacOS, Windows, Linux:
 
@@ -43,7 +45,7 @@ packer build -only=openbsd-vb -force openbsd.json
 
 (work in progress)
 
-### QEMU
+#### QEMU
 
 MacOS, Windows, Linux:
 
@@ -53,7 +55,7 @@ packer build -only=openbsd-qu -force openbsd.json
 
 (builds OK)
 
-### VMWare
+#### VMWare
 
 MacOS, Windows, Linux:
 
@@ -65,14 +67,14 @@ packer build -only=openbsd-vw -force openbsd.json
 
 ## run
 
-Start the VM:
+This imports our Box and creates a VM from it:
 
 ```shell
 vagrant validate Vagrantfile
 vagrant up
 ```
 
-## use
+### use
 
 Login:
 
