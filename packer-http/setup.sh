@@ -14,9 +14,22 @@ echo "starting setup.sh" >> /opt/vmsetup.log
 
 # box info
 touch -f /opt/box_info.txt
+echo "--- OpenBSD box info ---" >> /opt/box_info.txt
+echo $PACKER_BUILD_NAME >> /opt/box_info.txt
 echo $MY_BOX_VER >> /opt/box_info.txt
 echo $MY_ISO_URL >> /opt/box_info.txt
 echo $MY_ISO_SUM >> /opt/box_info.txt
+
+
+# X11 config
+echo "machdep.allowaperture=2" >> /etc/sysctl.conf
+echo "xenodm_flags=" >> /etc/rc.conf.local
+
+
+# install some packages into base box
+pkg_add -uUv
+pkg_add -I dmidecode curl vim--no_x11 rsync-- dos2unix
+
 
 # install sudo
 pkg_add sudo--
@@ -26,6 +39,7 @@ cat <<EOF > /etc/sudoers
 #includedir /etc/sudoers.d
 EOF
 
+# puffy user can sudo without password
 cat <<EOF > /etc/sudoers.d/puffy
 Defaults:puffy !requiretty
 puffy ALL=(ALL) NOPASSWD: ALL
@@ -38,6 +52,7 @@ EOF
 
 chmod 440 /etc/sudoers.d/root
 chmod 440 /etc/sudoers.d/puffy
+
 
 # user files
 chmod 750 /home/puffy

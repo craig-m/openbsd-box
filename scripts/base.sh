@@ -26,25 +26,15 @@ rcctl disable smtpd
 rcctl stop sndiod
 rcctl disable sndiod
 
-# install some packages
-pkg_add -uUv
-pkg_add -I dmidecode curl vim--no_x11 rsync-- dos2unix
-
-
-# X11 config
-echo "machdep.allowaperture=2" >> /etc/sysctl.conf
-echo "xenodm_flags=" >> /etc/rc.conf.local
-
-
-sleep 5
-sync
 
 if test -e /etc/rc.firsttime; then
     echo '/etc/rc.firsttime exists'
+    sleep 30
 else
     echo '/etc/rc.firsttime GONE'
 fi
 
+sync
 
 # done
 thetime=$(date +"%b %e %H:%M:%S")

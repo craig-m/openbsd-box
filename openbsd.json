@@ -171,10 +171,11 @@
 
     {
       "type": "shell",
-      "execute_command": "{{.Vars}} ksh '{{.Path}}'",
+      "execute_command": "export {{.Vars}} && ksh '{{.Path}}'",
       "scripts": [
         "scripts/base.sh"
       ],
+      "pause_before": "20s",
       "timeout": "10m",
       "environment_vars": [
         "MY_BOX_VER={{user `box_version`}}",
@@ -190,8 +191,8 @@
         "reboot"
       ],
       "expect_disconnect": true,
-      "pause_before": "5s",
-      "timeout": "30s"
+      "pause_before": "20s",
+      "timeout": "60s"
     },
 
     {
@@ -201,7 +202,7 @@
         "scripts/test.sh"
       ],
       "timeout": "5m",
-      "pause_before": "5s",
+      "pause_before": "20s",
       "expect_disconnect": false
     }
   ],
