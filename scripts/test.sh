@@ -6,8 +6,6 @@ sleep 3
 set -e
 set -x
 
-ls -la /opt/vmsetup.log
-
 pkg_check
 
 if test -e /etc/rc.firsttime; then

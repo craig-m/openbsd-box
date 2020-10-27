@@ -94,6 +94,12 @@ man security
 
 Useful documentation + code + guides
 
+**OpenBSD Docs**
+* https://www.openbsd.org/faq/
+
+**guides**
+* https://openbsdjumpstart.org/
+
 **packer projects**
 * https://github.com/upperstream/packer-templates/tree/master/openbsd
 * https://github.com/lavabit/robox

@@ -1,34 +1,47 @@
 #!/bin/ksh
 
 echo "OpenBSD setup.sh setup script"
-sleep 1
+sleep 3
 
 set -e
 set -x
 
-# filestore
-mkdir /opt
-chmod 770 /opt
-touch -f /opt/vmsetup.log
-echo "starting setup.sh" >> /opt/vmsetup.log
+# put all custom stuff under /opt
+if test -d /opt; then
+    echo "/opt already exists"
+else
+    echo "creating /opt"
+    mkdir /opt
+    chmod 770 /opt
+    touch -f /opt/vmsetup.log
+    echo "starting setup.sh" > /opt/vmsetup.log
+fi
 
 # box info
-touch -f /opt/box_info.txt
-echo "--- OpenBSD box info ---" >> /opt/box_info.txt
-echo $PACKER_BUILD_NAME >> /opt/box_info.txt
-echo $MY_BOX_VER >> /opt/box_info.txt
-echo $MY_ISO_URL >> /opt/box_info.txt
-echo $MY_ISO_SUM >> /opt/box_info.txt
-
+if test -e /opt/box_info.txt; then
+    echo '/opt/box_info.txt exists already'
+else
+    touch -f /opt/box_info.txt
+    echo "--- OpenBSD box info ---" >> /opt/box_info.txt
+    echo $PACKER_BUILD_NAME >> /opt/box_info.txt
+    echo $MY_BOX_VER >> /opt/box_info.txt
+    echo $MY_ISO_URL >> /opt/box_info.txt
+    echo $MY_ISO_SUM >> /opt/box_info.txt
+fi
 
 # X11 config
 echo "machdep.allowaperture=2" >> /etc/sysctl.conf
 echo "xenodm_flags=" >> /etc/rc.conf.local
 
+pkg_add -uUv
 
 # install some packages into base box
-pkg_add -uUv
-pkg_add -I dmidecode curl vim--no_x11 rsync-- dos2unix
+pkg_add -I \
+    dmidecode \
+    curl \
+    vim--no_x11 \
+    rsync-- \
+    dos2unix
 
 
 # install sudo
@@ -61,7 +74,7 @@ chown puffy:puffy /opt
 # allow root ssh login
 sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 
-sleep 1
+sleep 3
 sync
 
 thetime=$(date +"%b %e %H:%M:%S")

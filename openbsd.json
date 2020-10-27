@@ -1,240 +1,220 @@
 {
-
-  "_comment_m": "OpenBSD Vagrant VM",
-  "min_packer_version": "1.5.5",
-
-  "variables": {
-    "box_version": "6.8.20201025",
-    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
-    "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
-    "ssh_user_name": "root",
-    "ssh_user_pass": "rootpass",
-    "ssh_port": "22",
-    "ssh_timeout": "7200s",
-    "http_dir": "packer-http/",
-    "shutdown_cmd": "shutdown -h -p now",
-    "headless": "false",
-    "vm_disk": "32768",
-    "vm_cpus": "2",
-    "vm_mem": "2048"
-  },
-
-
+  "_comment_m": "OpenBSD 6.8 Packer Template",
   "builders": [
-
-  {
-    "type": "hyperv-iso",
-    "name": "openbsd-hv",
-    "vm_name": "openbsd-hv",
-
-    "iso_url": "{{user `iso_url`}}",
-    "iso_checksum": "{{user `iso_checksum`}}",
-    "boot_wait": "40s",
-    "boot_command": [
-      "S<enter><wait>",
-      "dhclient hvn0<enter><wait5>",
-      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
-      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
-      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
-    ],
-    "disk_size": "{{user `vm_disk`}}",
-    "memory": "{{user `vm_mem`}}",
-    "cpus": "{{user `vm_cpus`}}",
-    "communicator": "ssh",
-    "ssh_username": "{{user `ssh_user_name`}}",
-    "ssh_password": "{{user `ssh_user_pass`}}",
-    "ssh_port": "{{user `ssh_port`}}",
-    "ssh_timeout": "{{user `ssh_timeout`}}",
-    "shutdown_command": "{{user `shutdown_cmd`}}",
-    "http_directory": "{{user `http_dir`}}",
-    "headless": "{{user `headless`}}",
-
-    "generation": 1,
-    "mac_address": "9c0a914daaff",
-    "skip_compaction": false,
-    "enable_secure_boot": false,
-    "enable_mac_spoofing": false,
-    "enable_dynamic_memory": false,
-    "guest_additions_mode": "disable",
-    "enable_virtualization_extensions": false
-  },
-
-  {
-    "type": "virtualbox-iso",
-    "name": "openbsd-vb",
-    "vm_name": "openbsd-vb",
-
-    "iso_url": "{{user `iso_url`}}",
-    "iso_checksum": "{{user `iso_checksum`}}",
-    "boot_wait": "20s",
-    "boot_command": [
-      "S<enter><wait>",
-      "dhclient em0<enter><wait5>",
-      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
-      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
-      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
-    ],
-    "disk_size": "{{user `vm_disk`}}",
-    "memory": "{{user `vm_mem`}}",
-    "cpus": "{{user `vm_cpus`}}",
-    "communicator": "ssh",
-    "ssh_username": "{{user `ssh_user_name`}}",
-    "ssh_password": "{{user `ssh_user_pass`}}",
-    "ssh_port": "{{user `ssh_port`}}",
-    "ssh_timeout": "{{user `ssh_timeout`}}",
-    "shutdown_command": "{{user `shutdown_cmd`}}",
-    "http_directory": "{{user `http_dir`}}",
-    "headless": "{{user `headless`}}",
-
-    "guest_os_type": "OpenBSD_64",
-    "guest_additions_mode": "disable",
-    "vrdp_bind_address": "127.0.0.1",
-    "vrdp_port_min": 11000,
-    "vrdp_port_max": 12000,
-    "virtualbox_version_file": ".vbox_version"
-  },
-
-  {
-    "type": "vmware-iso",
-    "name": "openbsd-vw",
-    "vm_name": "openbsd-vw",
-
-    "iso_url": "{{user `iso_url`}}",
-    "iso_checksum": "{{user `iso_checksum`}}",
-    "boot_wait": "30s",
-    "boot_command": [
-      "S<enter><wait>",
-      "dhclient vio0<enter><wait5>",
-      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
-      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
-      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
-    ],
-    "disk_size": "{{user `vm_disk`}}",
-    "memory": "{{user `vm_mem`}}",
-    "cpus": "{{user `vm_cpus`}}",
-    "communicator": "ssh",
-    "ssh_username": "{{user `ssh_user_name`}}",
-    "ssh_password": "{{user `ssh_user_pass`}}",
-    "ssh_port": "{{user `ssh_port`}}",
-    "ssh_timeout": "7200s",
-    "shutdown_command": "{{user `shutdown_cmd`}}",
-    "http_directory": "{{user `http_dir`}}",
-    "headless": "{{user `headless`}}",
-
-    "vmx_data": {
-      "ethernet0.present": "TRUE",
-      "ethernet0.networkName": "VM Network",
-      "ethernet0.wakeOnPcktRcv": "FALSE",
-      "ethernet0.addressType": "generated",
-      "remotedisplay.vnc.enabled": "TRUE",
-      "vhv.enable": "TRUE"
-    }
-  },
-
-  {
-    "type": "qemu",
-    "name": "openbsd-qu",
-    "vm_name": "openbsd-qu",
-
-    "iso_url": "{{user `iso_url`}}",
-    "iso_checksum": "{{user `iso_checksum`}}",
-    "boot_wait": "30s",
-    "boot_command": [
-      "S<enter><wait>",
-      "dhclient vio0<enter><wait5>",
-      "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
-      "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
-      "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<enter>"
-    ],
-    "disk_size": "{{user `vm_disk`}}",
-    "memory": "{{user `vm_mem`}}",
-    "cpus": "{{user `vm_cpus`}}",
-    "communicator": "ssh",
-    "ssh_username": "{{user `ssh_user_name`}}",
-    "ssh_password": "{{user `ssh_user_pass`}}",
-    "ssh_port": "{{user `ssh_port`}}",
-    "ssh_timeout": "7200s",
-    "shutdown_command": "{{user `shutdown_cmd`}}",
-    "http_directory": "{{user `http_dir`}}",
-    "headless": "{{user `headless`}}",
-
-    "format": "qcow2",
-    "accelerator": "kvm",
-    "net_device": "virtio-net",
-    "disk_interface": "virtio",
-    "disk_compression": true
-  }
-  ],
-
-
-  "provisioners": [
-
     {
-      "type": "shell",
-      "execute_command": "export {{.Vars}} && ksh '{{.Path}}'",
-      "scripts": [
-        "scripts/base.sh"
+      "boot_command": [
+        "S<enter><wait>",
+        "dhclient hvn0<enter><wait5>",
+        "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_cmd`}}"
       ],
-      "pause_before": "20s",
-      "timeout": "10m",
-      "environment_vars": [
-        "MY_BOX_VER={{user `box_version`}}",
-        "MY_ISO_URL={{user `iso_url`}}",
-        "MY_ISO_SUM={{user `iso_checksum`}}"
-      ],
-      "expect_disconnect": false
+      "boot_wait": "40s",
+      "communicator": "ssh",
+      "cpus": "{{user `vm_cpus`}}",
+      "disk_size": "{{user `vm_disk`}}",
+      "enable_dynamic_memory": false,
+      "enable_mac_spoofing": true,
+      "enable_secure_boot": false,
+      "enable_virtualization_extensions": true,
+      "generation": 1,
+      "guest_additions_mode": "disable",
+      "headless": "{{user `headless`}}",
+      "http_directory": "{{user `http_dir`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "mac_address": "{{user `vm_nic_mac`}}",
+      "memory": "{{user `vm_mem`}}",
+      "name": "openbsd-hv",
+      "shutdown_command": "{{user `shutdown_cmd`}}",
+      "skip_compaction": false,
+      "ssh_password": "{{user `ssh_user_pass`}}",
+      "ssh_port": "{{user `ssh_port`}}",
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "ssh_username": "{{user `ssh_user_name`}}",
+      "type": "hyperv-iso",
+      "vm_name": "openbsd-hv"
     },
-
     {
-      "type": "shell",
-      "inline": [
-        "reboot"
+      "boot_command": [
+        "S<enter><wait>",
+        "dhclient vio0<enter><wait5>",
+        "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
+        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_cmd`}}"
       ],
-      "expect_disconnect": true,
-      "pause_before": "20s",
-      "timeout": "60s"
+      "boot_wait": "30s",
+      "communicator": "ssh",
+      "cpus": "{{user `vm_cpus`}}",
+      "disk_size": "{{user `vm_disk`}}",
+      "headless": "{{user `headless`}}",
+      "http_directory": "{{user `http_dir`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "memory": "{{user `vm_mem`}}",
+      "name": "openbsd-vw",
+      "shutdown_command": "{{user `shutdown_cmd`}}",
+      "ssh_password": "{{user `ssh_user_pass`}}",
+      "ssh_port": "{{user `ssh_port`}}",
+      "ssh_timeout": "7200s",
+      "ssh_username": "{{user `ssh_user_name`}}",
+      "type": "vmware-iso",
+      "vm_name": "openbsd-vw",
+      "vmx_data": {
+        "ethernet0.addressType": "generated",
+        "ethernet0.networkName": "VM Network",
+        "ethernet0.present": "TRUE",
+        "ethernet0.wakeOnPcktRcv": "FALSE",
+        "remotedisplay.vnc.enabled": "TRUE",
+        "vhv.enable": "TRUE"
+      }
     },
-
     {
-      "type": "shell",
-      "execute_command": "ksh '{{.Path}}'",
-      "scripts": [
-        "scripts/test.sh"
+      "boot_command": [
+        "S<enter><wait>",
+        "dhclient em0<enter><wait5>",
+        "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
+        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_cmd`}}"
       ],
-      "timeout": "5m",
-      "pause_before": "20s",
-      "expect_disconnect": false
-    }
-  ],
-
-
-  "post-processors": [
-
-    {
-      "type": "artifice",
-      "files": [
-          "output-openbsd-vb/openbsd-disk001.vmdk",
-          "output-openbsd-vb/vbox-openbsd.ovf"
+      "boot_wait": "20s",
+      "communicator": "ssh",
+      "cpus": "{{user `vm_cpus`}}",
+      "disk_size": "{{user `vm_disk`}}",
+      "guest_additions_mode": "disable",
+      "guest_os_type": "OpenBSD_64",
+      "headless": "{{user `headless`}}",
+      "http_directory": "{{user `http_dir`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "memory": "{{user `vm_mem`}}",
+      "name": "openbsd-vb",
+      "shutdown_command": "{{user `shutdown_cmd`}}",
+      "ssh_password": "{{user `ssh_user_pass`}}",
+      "ssh_port": "{{user `ssh_port`}}",
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "ssh_username": "{{user `ssh_user_name`}}",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--rtcuseutc",
+          "on"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--natdnshostresolver1",
+          "on"
         ]
+      ],
+      "vm_name": "openbsd-vb",
+      "vrdp_bind_address": "127.0.0.1",
+      "vrdp_port_max": 12000,
+      "vrdp_port_min": 11000
     },
-
     {
-      "type": "vagrant",
+      "accelerator": "kvm",
+      "boot_command": [
+        "S<enter><wait>",
+        "dhclient hvn0<enter><wait5>",
+        "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
+        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_cmd`}}"
+      ],
+      "boot_wait": "40s",
+      "communicator": "ssh",
+      "cpus": "{{user `vm_cpus`}}",
+      "disk_compression": true,
+      "disk_interface": "virtio",
+      "disk_size": "{{user `vm_disk`}}",
+      "format": "qcow2",
+      "headless": "{{user `headless`}}",
+      "http_directory": "{{user `http_dir`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "memory": "{{user `vm_mem`}}",
+      "name": "openbsd-qu",
+      "net_device": "virtio-net",
+      "shutdown_command": "{{user `shutdown_cmd`}}",
+      "ssh_password": "{{user `ssh_user_pass`}}",
+      "ssh_port": "{{user `ssh_port`}}",
+      "ssh_timeout": "7200s",
+      "ssh_username": "{{user `ssh_user_name`}}",
+      "type": "qemu",
+      "vm_name": "openbsd-qu"
+    }
+  ],
+  "min_packer_version": "1.5.5",
+  "post-processors": [
+    {
+      "files": [
+        "output-openbsd-vb/openbsd-disk001.vmdk",
+        "output-openbsd-vb/vbox-openbsd.ovf"
+      ],
+      "type": "artifice"
+    },
+    {
       "compression_level": 9,
-      "keep_input_artifact": true,
-      "vagrantfile_template": "templates/vagrantfile.rb",
-      "output": "boxes/OpenBSD.box",
       "include": [
         "templates/info.json",
         "scripts/test.sh"
-      ]
+      ],
+      "keep_input_artifact": true,
+      "output": "boxes/OpenBSD.box",
+      "type": "vagrant",
+      "vagrantfile_template": "templates/vagrantfile.rb"
     },
-
     {
-      "type": "checksum",
       "checksum_types": "sha256",
-      "output": "boxes/{{.BuildName}}.{{user `box_version`}}.{{.ChecksumType}}.checksum"
+      "output": "boxes/{{.BuildName}}.{{user `box_version`}}.{{.ChecksumType}}.checksum",
+      "type": "checksum"
     }
-  ]
-
+  ],
+  "provisioners": [
+    {
+      "execute_command": "{{.Vars}} ksh '{{.Path}}'",
+      "expect_disconnect": false,
+      "scripts": [
+        "scripts/base.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "expect_disconnect": true,
+      "inline": [
+        "reboot"
+      ],
+      "pause_before": "5s",
+      "timeout": "30s",
+      "type": "shell"
+    },
+    {
+      "execute_command": "ksh '{{.Path}}'",
+      "expect_disconnect": false,
+      "pause_before": "5s",
+      "scripts": [
+        "scripts/test.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_version": "6.8.20201021",
+    "headless": "false",
+    "http_dir": "packer-http/",
+    "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
+    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
+    "shutdown_cmd": "shutdown -h -p now",
+    "ssh_port": "22",
+    "ssh_timeout": "7200s",
+    "ssh_user_name": "root",
+    "ssh_user_pass": "rootpass",
+    "vm_boot_cmd": "/install -a -f /install.conf -m install \u0026\u0026 chroot /mnt < /setup.sh \u0026\u0026 reboot<enter>",
+    "vm_cpus": "2",
+    "vm_disk": "32768",
+    "vm_mem": "4096",
+    "vm_nic_mac": "9c0a914daaff"
+  }
 }

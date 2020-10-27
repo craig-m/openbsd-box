@@ -6,6 +6,7 @@ set -x
 
 # info
 uname -a
+pwd
 
 sleep 3
 
@@ -29,7 +30,7 @@ rcctl disable sndiod
 
 if test -e /etc/rc.firsttime; then
     echo '/etc/rc.firsttime exists'
-    sleep 30
+    sleep 60
 else
     echo '/etc/rc.firsttime GONE'
 fi
