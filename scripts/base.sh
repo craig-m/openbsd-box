@@ -1,4 +1,7 @@
 #!/bin/ksh
+
+# this script is run by Packer
+
 echo "OpenBSD base.sh setup script"
 
 set -e
@@ -18,6 +21,19 @@ else
     echo 'ERROR /opt not created'
     exit 1
 fi
+
+# box info
+if test -e /opt/box_info.txt; then
+    echo '/opt/box_info.txt exists already'
+else
+    touch -f /opt/box_info.txt
+    echo "--- OpenBSD box info ---" >> /opt/box_info.txt
+    echo $PACKER_BUILD_NAME >> /opt/box_info.txt
+    echo $MY_BOX_VER >> /opt/box_info.txt
+    echo $MY_ISO_URL >> /opt/box_info.txt
+    echo $MY_ISO_SUM >> /opt/box_info.txt
+fi
+
 
 # stop mail server (why is this even installed by default)
 rcctl stop smtpd

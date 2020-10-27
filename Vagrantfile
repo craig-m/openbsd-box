@@ -30,8 +30,6 @@ Vagrant.configure("2") do |config|
     config.ssh.shell = "/bin/ksh"
     config.ssh.forward_agent = false
     config.vm.synced_folder ".", "/vagrant", disabled: true
-
-
     #
     # Virtual machines
     #
@@ -62,7 +60,6 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
-            config.vm.network "public_network", ip: "10.0.0.2"
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #
@@ -78,9 +75,9 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision :shell,
         :privileged => true, 
-        :path => "scripts/base.sh",
+        :path => "scripts/vagrant.sh",
         :binary => true, 
-        name: "vagrant vm base"
+        name: "vagrant sh"
 
 end
 

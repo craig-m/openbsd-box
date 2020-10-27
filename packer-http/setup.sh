@@ -17,21 +17,11 @@ else
     echo "starting setup.sh" > /opt/vmsetup.log
 fi
 
-# box info
-if test -e /opt/box_info.txt; then
-    echo '/opt/box_info.txt exists already'
-else
-    touch -f /opt/box_info.txt
-    echo "--- OpenBSD box info ---" >> /opt/box_info.txt
-    echo $PACKER_BUILD_NAME >> /opt/box_info.txt
-    echo $MY_BOX_VER >> /opt/box_info.txt
-    echo $MY_ISO_URL >> /opt/box_info.txt
-    echo $MY_ISO_SUM >> /opt/box_info.txt
-fi
 
 # X11 config
-echo "machdep.allowaperture=2" >> /etc/sysctl.conf
-echo "xenodm_flags=" >> /etc/rc.conf.local
+grep "machdep.allowaperture=" || echo "machdep.allowaperture=2" >> /etc/sysctl.conf
+grep "xenodm_flags=" >> /etc/rc.conf.local || echo "xenodm_flags=" >> /etc/rc.conf.local
+
 
 pkg_add -uUv
 
