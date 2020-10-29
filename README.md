@@ -33,8 +33,6 @@ Windows 10 build:
 packer build -only=openbsd-hv -force openbsd.json
 ```
 
-(working + tested)
-
 #### VirtualBox
 
 MacOS, Windows, Linux:
@@ -42,8 +40,6 @@ MacOS, Windows, Linux:
 ```shell
 packer build -only=openbsd-vb -force openbsd.json
 ```
-
-(work in progress)
 
 #### QEMU
 
@@ -53,7 +49,7 @@ MacOS, Windows, Linux:
 packer build -only=openbsd-qu -force openbsd.json
 ```
 
-(builds OK)
+(work in progress)
 
 #### VMWare
 
@@ -63,7 +59,7 @@ MacOS, Windows, Linux:
 packer build -only=openbsd-vw -force openbsd.json
 ```
 
-(not tested)
+(work in progress)
 
 ## run
 

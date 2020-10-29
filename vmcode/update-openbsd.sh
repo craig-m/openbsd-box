@@ -6,14 +6,17 @@ uname -a
 # update packages
 pkg_add -uUv
 
-# update Drivers + OS
+# update firmware
 fw_update
+
+# patch OpenBSD
 syspatch
 
 # list installed patches
 syspatch -l
 
-# syspatch
-# sysmerge
+# Upgrade to next release
+#sysupgrade
+#sysmerge
 
 echo "Update script finished!"
