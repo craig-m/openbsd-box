@@ -19,8 +19,8 @@ fi
 
 
 # X11 config
-grep "machdep.allowaperture=" || echo "machdep.allowaperture=2" >> /etc/sysctl.conf
-grep "xenodm_flags=" >> /etc/rc.conf.local || echo "xenodm_flags=" >> /etc/rc.conf.local
+echo "machdep.allowaperture=2" >> /etc/sysctl.conf
+echo "xenodm_flags=" >> /etc/rc.conf.local
 
 
 pkg_add -uUv

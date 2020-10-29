@@ -174,14 +174,6 @@
   ],
   "provisioners": [
     {
-      "execute_command": "{{.Vars}} ksh '{{.Path}}'",
-      "expect_disconnect": false,
-      "scripts": [
-        "scripts/base.sh"
-      ],
-      "type": "shell"
-    },
-    {
       "expect_disconnect": true,
       "inline": [
         "reboot"
