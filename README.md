@@ -1,6 +1,11 @@
 # OpenBSD-box
 
-An OpenBSD 6.8 learning/play setup, powered by Packer and Vagrant.
+An OpenBSD 6.8 learning / play / toy setup. 
+
+Built by:
+
+* Packer 1.6.4
+* Vagrant 2.2.10
 
 ## build
 
@@ -40,6 +45,8 @@ MacOS, Windows, Linux:
 ```shell
 packer build -only=openbsd-vb -force openbsd.json
 ```
+
+Tested on Virtualbox 6.1.16
 
 #### QEMU
 

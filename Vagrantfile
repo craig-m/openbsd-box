@@ -4,7 +4,7 @@
 
 # openbsd VM options
 MY_VM_RAM = "4096"
-MY_VM_CPU = "4"
+MY_VM_CPU = "6"
 MY_VM_CODE = "./vmcode/"
 
 # vagrant options
@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     config.ssh.shell = "/bin/ksh"
     config.ssh.forward_agent = false
     config.vm.synced_folder ".", "/vagrant", disabled: true
+
     #
     # Virtual machines
     #

@@ -1,7 +1,10 @@
 #!/bin/ksh
 
+# this is run x1 time by packer, before the machine
+# is exported and saved as a box.
+
 echo "OpenBSD setup.sh setup script"
-sleep 3
+sleep 5
 
 set -e
 set -x
@@ -13,12 +16,14 @@ else
     echo "creating /opt"
     mkdir /opt
     chmod 770 /opt
+    chown puffy:puffy /opt
     touch -f /opt/vmsetup.log
     echo "starting setup.sh" > /opt/vmsetup.log
 fi
 
 
 # X11 config
+cp /etc/sysctl.conf /etc/.sysctl.conf.bak
 echo "machdep.allowaperture=2" >> /etc/sysctl.conf
 echo "xenodm_flags=" >> /etc/rc.conf.local
 
@@ -34,7 +39,7 @@ pkg_add -I \
     dos2unix
 
 
-# install sudo
+# install sudo (used by Vagrant)
 pkg_add sudo--
 mkdir /etc/sudoers.d
 
@@ -57,14 +62,11 @@ chmod 440 /etc/sudoers.d/root
 chmod 440 /etc/sudoers.d/puffy
 
 
-# user files
-chmod 750 /home/puffy
-chown puffy:puffy /opt
 
 # allow root ssh login
 sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 
-sleep 3
+sleep 10
 sync
 
 thetime=$(date +"%b %e %H:%M:%S")

@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 echo "Testing script"
-sleep 3
+sleep 5
 
 set -e
 set -x
@@ -23,4 +23,5 @@ else
     echo '/etc/rc.firsttime GONE'
 fi
 
+sleep 5
 echo "test.sh finished" >> /opt/vmsetup.log

@@ -13,5 +13,14 @@ rcctl disable smtpd
 rcctl stop sndiod
 rcctl disable sndiod
 
+# update packages
+pkg_add -uUv
+
+# update firmware
+fw_update
+
+# patch OpenBSD
+syspatch
+
 
 echo "vagrant.sh finished"

@@ -146,7 +146,7 @@
       "vm_name": "openbsd-qu"
     }
   ],
-  "min_packer_version": "1.5.5",
+  "min_packer_version": "1.6.0",
   "post-processors": [
     {
       "files": [
@@ -178,8 +178,8 @@
       "inline": [
         "reboot"
       ],
-      "pause_before": "5s",
-      "timeout": "30s",
+      "pause_before": "60s",
+      "timeout": "60s",
       "type": "shell"
     },
     {
@@ -193,7 +193,7 @@
     }
   ],
   "variables": {
-    "box_version": "6.8.20201021",
+    "box_version": "6.8.20201030",
     "headless": "false",
     "http_dir": "packer-http/",
     "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",

@@ -12,6 +12,12 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "inspect",
+            "type": "shell",
+            "command": "packer inspect openbsd.json",
+            "problemMatcher": []
         }
     ]
 }

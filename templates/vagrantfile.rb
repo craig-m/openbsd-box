@@ -87,6 +87,19 @@ Vagrant.configure("2") do |config|
         end
     end
 
+    # --- parallels  ---
+    config.vm.provider :parallels do |prl, override|
+        prl.check_guest_tools = false
+        prl.functional_psf    = false
+    end
+
+
+    #
+    # port forwards
+    #
+
+    config.vm.network :forwarded_port, guest: 8888, host: 8080, auto_correct: true, id: 'webalt'
+
     #
     # action Triggers
     #
