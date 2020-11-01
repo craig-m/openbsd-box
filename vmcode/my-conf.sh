@@ -17,7 +17,7 @@ else
     cp /etc/pf.conf /etc/.pf.conf.bak
 fi
 
-cp my-etc/pf.conf /etc/pf.conf
+cp /opt/vmcode/my-etc/pf.conf /etc/pf.conf
 
 # test rules
 pfctl -n -f /etc/pf.conf
@@ -29,7 +29,7 @@ pfctl -f /etc/pf.conf
 # httpd webserver
 #
 
-cp /opt/code/my-etc/httpd.conf /etc/httpd.conf
+cp /opt/vmcode/my-etc/httpd.conf /etc/httpd.conf
 
 mkdir -p /var/www/htdocs/{local,pub}/
 touch -f /var/www/htdocs/{local,pub}/index.html

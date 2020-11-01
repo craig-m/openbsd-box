@@ -10,7 +10,7 @@ MY_VM_CODE = "./vmcode/"
 # vagrant options
 VAGRANT_API_VER = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
-CODE_MNT = "/opt/code"
+CODE_MNT = "/opt/vmcode"
 CODE_MNT_OPT = ["dmode=775,fmode=644"]
 
 
