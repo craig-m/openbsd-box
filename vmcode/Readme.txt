@@ -1,3 +1,4 @@
+# Readme
                                                
    ____                   ____   _____ _____   
   / __ \                 |  _ \ / ____|  __ \  
@@ -8,3 +9,9 @@
         | |                                    
         |_|                                    
                                                
+                                               
+Inside the Vagrant VM this folder is mounted at
+
+/opt/vmcode/
+
+eof
