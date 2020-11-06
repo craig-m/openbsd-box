@@ -42,7 +42,13 @@ Windows 10 build:
 packer build -only=openbsd-hv -force openbsd.json
 ```
 
-* Tested on 2004.
+Enable nesting on HyperV VM (on existing shutdown vm/box):
+
+```
+Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
+```
+
+* Tested on release 2004
 
 #### VirtualBox
 
@@ -52,7 +58,9 @@ MacOS/Windows/Linux build:
 packer build -only=openbsd-vb -force openbsd.json
 ```
 
-* Tested on Virtualbox 6.1.16 + MacOS.
+* Tested on Virtualbox 6.1.16 + MacOS
+* Tested on Virtualbox 6.1 + Ubuntu 20.04
+* Tested on Virtualbox 6.1 + Windows 10
 
 #### QEMU
 
@@ -62,7 +70,8 @@ MacOS/Windows/Linux build:
 packer build -only=openbsd-qu -force openbsd.json
 ```
 
-(work in progress)
+* Tested on QEMU 5.0.0 + Ubuntu 20.10
+* Tested on QEMU 5.1.0 + Fedora 33
 
 #### VMWare
 
@@ -87,7 +96,7 @@ vagrant up
 
 This is not one of the standard providers, you need to install the plugin first.
 
-```
+```shell
 vagrant up --provider=libvirt
 ```
 
