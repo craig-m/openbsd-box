@@ -9,7 +9,7 @@ Built by:
 
 ## packer build
 
-To first create the Vagrant box image first check the packer json.
+First check the packer json.
 
 ```shell
 packer validate openbsd.json
@@ -114,6 +114,15 @@ Learn OpenBSD.
 man afterboot
 man intro
 man security
+```
+
+### clean up
+
+Remove everything:
+
+```
+vagrant destroy
+vagrant box remove openbsd
 ```
 
 ## links
