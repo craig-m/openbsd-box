@@ -24,4 +24,4 @@ else
 fi
 
 sleep 5
-echo "test.sh finished" >> /opt/vmsetup.log
+echo "test.sh finished"

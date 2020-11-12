@@ -6,7 +6,7 @@
         "S<enter><wait>",
         "dhclient hvn0<enter><wait5>",
         "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
-        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_setupsh`}}",
         "{{user `vm_boot_cmd`}}"
       ],
       "boot_wait": "40s",
@@ -40,7 +40,7 @@
         "S<enter><wait>",
         "dhclient vio0<enter><wait5>",
         "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait>",
-        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_setupsh`}}",
         "{{user `vm_boot_cmd`}}"
       ],
       "boot_wait": "30s",
@@ -74,7 +74,7 @@
         "S<enter><wait>",
         "dhclient em0<enter><wait5>",
         "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install.conf<enter><wait>",
-        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
+        "{{user `vm_boot_setupsh`}}",
         "{{user `vm_boot_cmd`}}"
       ],
       "boot_wait": "20s",
@@ -120,7 +120,7 @@
         "<wait5>S<enter><wait5>",
         "dhclient vio0<enter><wait10>",
         "ftp -o /install.conf http://{{.HTTPIP}}:{{.HTTPPort}}/install-qemu.conf<enter><wait5>",
-        "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait5>",
+        "{{user `vm_boot_setupsh`}}",
         "{{user `vm_boot_cmd`}}"
       ],
       "boot_wait": "40s",
@@ -178,7 +178,7 @@
     {
       "expect_disconnect": true,
       "inline": [
-        "reboot"
+        "sudo reboot"
       ],
       "pause_before": "60s",
       "timeout": "60s",
@@ -187,7 +187,7 @@
     {
       "execute_command": "ksh '{{.Path}}'",
       "expect_disconnect": false,
-      "pause_before": "5s",
+      "pause_before": "10s",
       "scripts": [
         "scripts/test.sh"
       ],
@@ -200,12 +200,13 @@
     "http_dir": "packer-http/",
     "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
     "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
-    "shutdown_cmd": "shutdown -h -p now",
+    "shutdown_cmd": "sudo shutdown -h -p now",
     "ssh_port": "22",
     "ssh_timeout": "7200s",
-    "ssh_user_name": "root",
-    "ssh_user_pass": "rootpass",
+    "ssh_user_name": "puffy",
+    "ssh_user_pass": "puffypass",
     "vm_boot_cmd": "/install -a -f /install.conf -m install \u0026\u0026 chroot /mnt < /setup.sh \u0026\u0026 reboot<enter>",
+    "vm_boot_setupsh": "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
     "vm_cpus": "2",
     "vm_disk": "32768",
     "vm_mem": "4096",

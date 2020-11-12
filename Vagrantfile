@@ -1,23 +1,23 @@
 #
-# Vars
+# OpenBSD Vagrant box
 #
 
-# openbsd VM options
-MY_VM_RAM = "4096"
-MY_VM_CPU = "6"
+# vm vars
+MY_VM_RAM = "2048"
+MY_VM_CPU = "4"
 MY_VM_CODE = "./vmcode/"
+CODE_MNT = "/opt/vmcode"
+CODE_MNT_OPT = ["dmode=775,fmode=644"]
 
 # vagrant options
 VAGRANT_API_VER = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
-CODE_MNT = "/opt/vmcode"
-CODE_MNT_OPT = ["dmode=775,fmode=644"]
 
 
 Vagrant.configure("2") do |config|
 
     #
-    # OpenBSD Box and VM config
+    # VM config
     #
 
     config.vm.box = "openbsd"

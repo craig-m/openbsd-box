@@ -2,7 +2,7 @@
 # OpenBSD Vagrantfile template
 #
 
-Vagrant.require_version ">= 2.2.9"
+Vagrant.require_version ">= 2.2.10"
 
 # openbsd VM options
 MY_VM_RAM = "4096"

@@ -125,6 +125,7 @@ Useful documentation + code + guides
 
 **guides**
 * https://openbsdjumpstart.org/
+* https://why-openbsd.rocks/fact/
 
 **packer projects**
 * https://github.com/upperstream/packer-templates/tree/master/openbsd

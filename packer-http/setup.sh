@@ -62,12 +62,14 @@ chmod 440 /etc/sudoers.d/root
 chmod 440 /etc/sudoers.d/puffy
 
 
+# tighten homedir perm
+chmod 750 /home/puffy
 
 # allow root ssh login
-sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+#sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 
 sleep 10
 sync
 
-thetime=$(date +"%b %e %H:%M:%S")
-echo "${thetime} setup.sh finished" >> /opt/vmsetup.log
+echo "setup.sh finished" >> /opt/vmsetup.log
+logger "setup.sh finished"

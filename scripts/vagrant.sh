@@ -22,5 +22,5 @@ fw_update
 # patch OpenBSD
 syspatch
 
-
 echo "vagrant.sh finished"
+logger "vagrant.sh finished"
