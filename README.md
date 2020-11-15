@@ -1,6 +1,6 @@
 # OpenBSD-box
 
-An [OpenBSD](https://www.openbsd.org/) (6.8) learning / play / toy setup. 
+An [OpenBSD](https://www.openbsd.org/) (6.8) learning / play / toy setup.
 
 Built by:
 
@@ -44,7 +44,7 @@ packer build -only=openbsd-hv -force openbsd.json
 
 Enable nesting on HyperV VM (on existing shutdown vm/box):
 
-```
+```shell
 Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
 ```
 
@@ -120,7 +120,7 @@ man security
 
 Remove everything:
 
-```
+```shell
 vagrant destroy
 vagrant box remove openbsd
 ```

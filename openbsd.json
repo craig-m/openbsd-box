@@ -185,6 +185,11 @@
       "type": "shell"
     },
     {
+      "environment_vars": [
+        "iso_checksum={{user `iso_checksum`}}",
+        "iso_url={{user `iso_url`}}",
+        "box_version={{user `box_version`}}"
+      ],
       "execute_command": "ksh '{{.Path}}'",
       "expect_disconnect": false,
       "pause_before": "10s",
