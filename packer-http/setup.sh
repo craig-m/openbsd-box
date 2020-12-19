@@ -1,10 +1,10 @@
 #!/bin/ksh
 
-# this is run x1 time by packer, before the machine
-# is exported and saved as a box.
+# this script is run one time by packer (as root),
+# before the machine is exported and saved as a box.
 
 echo "OpenBSD setup.sh setup script"
-sleep 5
+sleep 10
 
 set -e
 set -x
@@ -18,7 +18,7 @@ else
     chmod 770 /opt
     chown puffy:puffy /opt
     touch -f /opt/vmsetup.log
-    echo "starting setup.sh" > /opt/vmsetup.log
+    echo "setup.sh starting" > /opt/vmsetup.log
 fi
 
 
@@ -36,7 +36,27 @@ pkg_add -I \
     curl \
     vim--no_x11 \
     rsync-- \
-    dos2unix
+    dos2unix \
+    mutt-- \
+    openbsd-backgrounds
+
+# login window
+cp /etc/X11/xenodm/Xsetup_0 /etc/X11/xenodm/.Xsetup_0.bak
+cat <<EOF > /etc/X11/xenodm/Xsetup_0
+#!/bin/sh
+if test -x /usr/local/bin/openbsd-wallpaper
+then
+    /usr/local/bin/openbsd-wallpaper
+fi
+EOF
+
+# create .Xresources
+cat <<EOF > /home/puffy/.Xresources
+XTerm*faceName:Terminus*
+XTerm*faceSize:14
+EOF
+
+chown puffy:puffy /home/puffy/.Xresources
 
 
 # install sudo (used by Vagrant)
@@ -67,6 +87,32 @@ chmod 750 /home/puffy
 
 # allow root ssh login
 #sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+
+
+# update/patch script
+
+cat <<EOF > /root/update.sh
+#!/bin/ksh
+echo "patching system"
+
+# update packages
+pkg_add -uUv
+
+# update firmware
+fw_update
+
+# patch OpenBSD
+syspatch
+
+# Upgrade to next release of OpenBSD
+#sysupgrade
+#sysmerge
+
+echo "patching finished"
+EOF
+
+chmod +x /root/update.sh
+
 
 sleep 10
 sync

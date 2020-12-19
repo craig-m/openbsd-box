@@ -148,7 +148,7 @@
       "vm_name": "openbsd-qu"
     }
   ],
-  "min_packer_version": "1.6.0",
+  "min_packer_version": "1.6.6",
   "post-processors": [
     {
       "files": [
@@ -170,7 +170,7 @@
     },
     {
       "checksum_types": "sha256",
-      "output": "boxes/{{.BuildName}}.{{user `box_version`}}.{{.ChecksumType}}.checksum",
+      "output": "boxes/{{.BuildName}}.{{.ChecksumType}}.checksum",
       "type": "checksum"
     }
   ],
@@ -178,21 +178,21 @@
     {
       "expect_disconnect": true,
       "inline": [
+        "sudo /root/update.sh",
         "sudo reboot"
       ],
       "pause_before": "60s",
-      "timeout": "60s",
+      "timeout": "180s",
       "type": "shell"
     },
     {
       "environment_vars": [
         "iso_checksum={{user `iso_checksum`}}",
-        "iso_url={{user `iso_url`}}",
-        "box_version={{user `box_version`}}"
+        "iso_url={{user `iso_url`}}"
       ],
       "execute_command": "ksh '{{.Path}}'",
       "expect_disconnect": false,
-      "pause_before": "10s",
+      "pause_before": "30s",
       "scripts": [
         "scripts/test.sh"
       ],
@@ -200,7 +200,6 @@
     }
   ],
   "variables": {
-    "box_version": "6.8.20201030",
     "headless": "false",
     "http_dir": "packer-http/",
     "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
@@ -210,7 +209,7 @@
     "ssh_timeout": "7200s",
     "ssh_user_name": "puffy",
     "ssh_user_pass": "puffypass",
-    "vm_boot_cmd": "/install -a -f /install.conf -m install \u0026\u0026 chroot /mnt < /setup.sh \u0026\u0026 reboot<enter>",
+    "vm_boot_cmd": "/install -a -f /install.conf -m install \u0026\u0026 chroot /mnt < /setup.sh \u0026\u0026 reboot<wait><enter>",
     "vm_boot_setupsh": "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
     "vm_cpus": "2",
     "vm_disk": "32768",

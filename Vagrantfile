@@ -3,8 +3,8 @@
 #
 
 # vm vars
-MY_VM_RAM = "2048"
-MY_VM_CPU = "4"
+MY_VM_RAM = "1048"
+MY_VM_CPU = "2"
 MY_VM_CODE = "./vmcode/"
 CODE_MNT = "/opt/vmcode"
 CODE_MNT_OPT = ["dmode=775,fmode=644"]
@@ -59,6 +59,7 @@ Vagrant.configure("2") do |config|
         #
         # ------ VirtualBox ------
         config.vm.provider :virtualbox do |vbox, override|
+            vbox.gui = false
             override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
         end
         #

@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 echo "Testing script"
-sleep 5
+sleep 10
 
 set -e
 set -x
@@ -23,5 +23,5 @@ else
     echo '/etc/rc.firsttime GONE'
 fi
 
-sleep 5
+sleep 10
 echo "test.sh finished"
