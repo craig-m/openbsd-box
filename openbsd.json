@@ -148,7 +148,7 @@
       "vm_name": "openbsd-qu"
     }
   ],
-  "min_packer_version": "1.6.6",
+  "min_packer_version": "1.7.0",
   "post-processors": [
     {
       "files": [

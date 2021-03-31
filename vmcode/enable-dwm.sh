@@ -3,6 +3,11 @@
 # https://dwm.suckless.org/
 # https://dwm.suckless.org/tutorial/
 
+# Keys:
+#           Mod     Alt
+#           S       Shift
+#           C       Ctrl
+
 echo "installing dwm"
 
 pkg_add -I dwm dmenu st

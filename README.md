@@ -6,7 +6,7 @@ The default desktop [FVWM](https://www.fvwm.org/) is used.
 
 Built by:
 
-* [Packer](https://www.packer.io/) 1.6.6
+* [Packer](https://www.packer.io/) 1.7.0
 * [Vagrant](https://www.vagrantup.com/) 2.2.14
 
 ## packer build
@@ -85,7 +85,7 @@ packer build -only=openbsd-vw -force openbsd.json
 
 ## run
 
-This imports our Box and creates a VM from it:
+Imports our Box and create a VM from it:
 
 ```shell
 vagrant validate Vagrantfile
@@ -94,7 +94,7 @@ vagrant up
 
 ### run on Libvirt
 
-This is not one of the standard providers, you need to install the plugin first.
+Libvirt is not one of the standard providers, you need to install the plugin first.
 
 ```shell
 vagrant up --provider=libvirt

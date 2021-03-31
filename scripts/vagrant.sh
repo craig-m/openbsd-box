@@ -10,8 +10,8 @@ echo "vagrant.sh running"
 # rcctl disable smtpd
 
 # disable sound
-# rcctl stop sndiod
-# rcctl disable sndiod
+#rcctl stop sndiod
+#rcctl disable sndiod
 
 
 echo "vagrant.sh finished"
