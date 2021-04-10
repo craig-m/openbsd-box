@@ -1,5 +1,5 @@
 {
-  "_comment_m": "OpenBSD 6.8 Packer Template",
+  "_comment_m": "OpenBSD Packer Template",
   "builders": [
     {
       "boot_command": [
@@ -32,6 +32,7 @@
       "ssh_port": "{{user `ssh_port`}}",
       "ssh_timeout": "{{user `ssh_timeout`}}",
       "ssh_username": "{{user `ssh_user_name`}}",
+      "switch_name": "PackerSwitch",
       "type": "hyperv-iso",
       "vm_name": "openbsd-hv"
     },
@@ -202,8 +203,8 @@
   "variables": {
     "headless": "false",
     "http_dir": "packer-http/",
-    "iso_checksum": "47E291FCC2D0C1A8AE0B66329F040B33AF755B6ADBD21739E20BB5AD56F62B6C",
-    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.8/amd64/install68.iso",
+    "iso_checksum": "5c0f0a09aa2762bcf7f483939cb0276b9b70cee94dcbb6f199039f4c9d96545d",
+    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/snapshots/amd64/install69.iso",
     "shutdown_cmd": "sudo shutdown -h -p now",
     "ssh_port": "22",
     "ssh_timeout": "7200s",

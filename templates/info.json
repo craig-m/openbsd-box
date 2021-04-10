@@ -1,8 +1,8 @@
 {
     "Author": "crgm",
     "Website": "crgm.net",
-    "Artifacts": "https://github.com/craig-m/",
-    "Repository": "https://github.com/craig-m/",
+    "Artifacts": "https://github.com/craig-m/openbsd-box",
+    "Repository": "https://github.com/craig-m/openbsd-box",
     "name": "openbsd",
     "Description": "OpenBSD Packer and Vagrant setup.",
     "versions": [

@@ -1,6 +1,6 @@
 # OpenBSD-box
 
-An [OpenBSD](https://www.openbsd.org/) (6.8) learning / play / dev box.
+An [OpenBSD](https://www.openbsd.org/) learning / play / dev box.
 
 The default desktop [FVWM](https://www.fvwm.org/) is used.
 
