@@ -6,8 +6,8 @@ The default desktop [FVWM](https://www.fvwm.org/) is used.
 
 Built by:
 
-* [Packer](https://www.packer.io/) 1.7.0
-* [Vagrant](https://www.vagrantup.com/) 2.2.14
+* [Packer](https://www.packer.io/)
+* [Vagrant](https://www.vagrantup.com/)
 
 ## packer build
 
