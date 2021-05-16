@@ -116,7 +116,6 @@
       "vrdp_port_min": 11000
     },
     {
-      "accelerator": "kvm",
       "boot_command": [
         "<wait5>S<enter><wait5>",
         "dhclient vio0<enter><wait10>",
@@ -157,6 +156,11 @@
         "output-openbsd-vb/vbox-openbsd.ovf"
       ],
       "type": "artifice"
+    },
+    {
+      "type": "manifest",
+      "output": "boxes/manifest.json",
+      "strip_path": true
     },
     {
       "compression_level": 9,
@@ -203,8 +207,8 @@
   "variables": {
     "headless": "false",
     "http_dir": "packer-http/",
-    "iso_checksum": "5c0f0a09aa2762bcf7f483939cb0276b9b70cee94dcbb6f199039f4c9d96545d",
-    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/snapshots/amd64/install69.iso",
+    "iso_checksum": "140d26548aec680e34bb5f82295414228e7f61e4f5e7951af066014fda2d6e43",
+    "iso_url": "https://cdn.openbsd.org/pub/OpenBSD/6.9/amd64/install69.iso",
     "shutdown_cmd": "sudo shutdown -h -p now",
     "ssh_port": "22",
     "ssh_timeout": "7200s",

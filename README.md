@@ -2,12 +2,7 @@
 
 An [OpenBSD](https://www.openbsd.org/) learning / play / dev box.
 
-The default desktop [FVWM](https://www.fvwm.org/) is used.
-
-Built by:
-
-* [Packer](https://www.packer.io/) 1.7.0
-* [Vagrant](https://www.vagrantup.com/) 2.2.14
+Built by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
 
 ## packer build
 
@@ -50,38 +45,33 @@ Enable nesting on HyperV VM (on an existing shutdown vm/box):
 Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
 ```
 
-* Tested on release 2004
-
 #### VirtualBox
 
-MacOS/Windows/Linux build:
+Mac / Win / Linux build:
 
 ```shell
 packer build -only=openbsd-vb -force openbsd.json
 ```
 
-* Tested on Virtualbox 6.1 + MacOS / Ubuntu 20.04 / Windows 10
-
 #### QEMU
 
-MacOS/Windows/Linux build:
+Mac / Win / Linux build:
 
 ```shell
 packer build -only=openbsd-qu -force openbsd.json
 ```
 
-* Tested on QEMU 5.0 + Ubuntu 20.10
-* Tested on QEMU 5.1 + Fedora 33
+You will need a [VNC](https://en.wikipedia.org/wiki/Virtual_Network_Computing) client to monitor progress.
 
 #### VMWare
 
-MacOS/Windows/Linux build:
+Mac / Win / Linux build:
 
 ```shell
 packer build -only=openbsd-vw -force openbsd.json
 ```
 
-(work in progress)
+work in progress.
 
 ## run
 
