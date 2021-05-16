@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Building OpenBSD box"
+echo "Building OpenBSD box."
 
 # script input flags
 case "$1" in
@@ -50,4 +50,4 @@ packer build -only=${packbldtype} ${packerinput}
 vagrant status | grep "not created" -q || { echo "ERROR created already"; exit 1; }
 vagrant up
 
-echo "Finished build script"
+echo "Finished build script."
