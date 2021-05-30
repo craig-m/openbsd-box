@@ -1,8 +1,8 @@
 # OpenBSD-box
 
-An [OpenBSD](https://www.openbsd.org/) learning / play / dev box.
+![alt text](packer-http/puf150X129.gif "Puffy")
 
-Built by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
+An [OpenBSD](https://www.openbsd.org/) learning / play / dev box. Built by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
 
 ## packer build
 
@@ -11,6 +11,12 @@ Check the packer json:
 ```shell
 packer validate openbsd.json
 packer inspect openbsd.json
+```
+
+Convert to [HCL](https://github.com/hashicorp/hcl) with the command:
+
+```shell
+packer hcl2_upgrade -with-annotations openbsd.json
 ```
 
 ### Debugging packer builds
@@ -87,6 +93,7 @@ vagrant up
 Libvirt is not one of the standard providers, you need to install the plugin first.
 
 ```shell
+vagrant plugin install vagrant-libvirt
 vagrant up --provider=libvirt
 ```
 

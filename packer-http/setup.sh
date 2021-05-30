@@ -49,6 +49,7 @@ pkg_add -I \
     curl \
     rsync-- \
     dos2unix \
+    vim--no_x11 \
     mutt--
 
 
@@ -87,9 +88,23 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4
 
 
 # update/patch script
-cat <<EOF > /root/update.sh
+cat <<EOF > /opt/update.sh
 #!/bin/ksh
-echo "patching system"
+logger "update.sh started"
+echo "update.sh started" >> /opt/vmsetup.log
+
+patchnum=$(syspatch -l | wc -l | tr -d " \t")
+echo "currently ${patchnum} patches applied"
+
+# wait if rc.firsttime exists
+while test -e /etc/rc.firsttime; do
+    sleep 10
+done
+
+# wait if /opt/.setup.sh does NOT exist
+while test ! -e /opt/.setup.sh; do
+    sleep 10
+done
 
 # update packages
 pkg_add -uUv
@@ -104,14 +119,21 @@ syspatch
 #sysupgrade
 #sysmerge
 
-echo "patching finished"
+sleep 3
+sync
+
+logger "update.sh finished"
+echo "update.sh finished" >> /opt/vmsetup.log
 EOF
 
-chmod +x /root/update.sh
+chmod +x /opt/update.sh
 
+echo "list syspatches"
+syspatch -l
 
 sleep 10
 sync
 
+touch /opt/.setup.sh
 echo "setup.sh finished" >> /opt/vmsetup.log
 logger "setup.sh finished"

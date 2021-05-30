@@ -1,27 +1,28 @@
 #!/bin/ksh
 
+# run by Packer post-processor, and on Vagrant on provision/up.
+
 echo "Testing script"
 sleep 10
 
 set -e
 set -x
 
-# check if we created /opt yet
-if test -d /opt; then
+# check if setup.sh finished
+if test -e /opt/.setup.sh; then
     echo '/opt exists (setup.sh ran)'
 else
-    echo 'ERROR /opt not created'
+    echo 'ERROR setup.sh did not finish.'
     exit 1
 fi
 
 pkg_check
 
-if test -e /etc/rc.firsttime; then
-    echo '/etc/rc.firsttime exists'
-    sleep 60
-else
-    echo '/etc/rc.firsttime GONE'
-fi
+# wait if rc.firsttime exists
+while test -e /etc/rc.firsttime; do
+    sleep 3
+done
+echo '/etc/rc.firsttime GONE'
 
 sleep 10
 echo "test.sh finished"

@@ -181,13 +181,21 @@
   ],
   "provisioners": [
     {
+      "expect_disconnect": false,
+      "inline": [
+        "sudo /opt/update.sh"
+      ],
+      "pause_before": "30s",
+      "timeout": "300s",
+      "type": "shell"
+    },
+    {
       "expect_disconnect": true,
       "inline": [
-        "sudo /root/update.sh",
         "sudo reboot"
       ],
-      "pause_before": "60s",
-      "timeout": "180s",
+      "pause_before": "30s",
+      "timeout": "300s",
       "type": "shell"
     },
     {

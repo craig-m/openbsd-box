@@ -6,12 +6,18 @@
         {
             "label": "test",
             "type": "shell",
-            "command": "packer validate openbsd.json",
+            "command": "packer validate -syntax-only openbsd.json",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "rsync-auto",
+            "type": "shell",
+            "command": "vagrant rsync-auto",
+            "problemMatcher": []
         },
         {
             "label": "inspect",

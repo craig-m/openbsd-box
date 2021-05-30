@@ -1,4 +1,5 @@
 # Git ignore files:
+*.log
 .vagrant/
 boxes/
 output-openbsd-hv/
