@@ -37,15 +37,15 @@ esac
 packerinput="openbsd.json"
 #packerinput="openbsd.json.pkr.hcl"
 
-export PACKER_LOG=1
+export PACKER_LOG=2
 export PACKER_LOG_PATH=packer.log
 
 echo "[*] using config: ${packerinput}"
 
-# Validate
+# Validate packer input
 packer validate -syntax-only ${packerinput} || { echo "ERROR validating ${packerinput}"; exit 1; }
 
-# Build
+# Build the box
 packer build -only=${packbldtype} ${packerinput} || { echo "ERROR packer build failed"; exit 1; }
 
 echo "------ box files ------"
