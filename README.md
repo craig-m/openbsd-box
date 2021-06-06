@@ -4,7 +4,7 @@
 
 An [OpenBSD](https://www.openbsd.org/) learning / play / dev box. Built by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
 
-## packer build
+## packer build of VM image
 
 Check the packer json:
 
@@ -45,12 +45,6 @@ Windows 10 build:
 packer build -only=openbsd-hv -force openbsd.json
 ```
 
-Enable nesting on HyperV VM (on an existing shutdown vm/box):
-
-```shell
-Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
-```
-
 #### VirtualBox
 
 Mac / Win / Linux build:
@@ -77,9 +71,9 @@ Mac / Win / Linux build:
 packer build -only=openbsd-vw -force openbsd.json
 ```
 
-work in progress.
+Vmware needs testing still.
 
-## run
+## run OpenBSD VM with Vagrant
 
 Imports our Box and create a VM from it:
 
@@ -88,7 +82,17 @@ vagrant validate Vagrantfile
 vagrant up
 ```
 
-### run on Libvirt
+### Hyper-V notes
+
+You can enable nesting on HyperV. On an existing shutdown Vagrant vm:
+
+```shell
+Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
+```
+
+You need to do this to use [vmm](https://www.openbsd.org/faq/faq16.html), the OpenBSD hypervisor.
+
+### Libvirt notes
 
 Libvirt is not one of the standard providers, you need to install the plugin first.
 
@@ -121,6 +125,10 @@ Remove everything:
 vagrant destroy
 vagrant box remove openbsd
 ```
+
+## scripts
+
+The steps above have been automated in build.sh/ps1, and clean.sh/ps1.
 
 ## links
 

@@ -51,20 +51,27 @@ packer build -only=${packbldtype} ${packerinput} || { echo "ERROR packer build f
 echo "------ box files ------"
 ls -lah -- boxes/
 
+# Validate Vagrantfile
+vagrant validate || { echo "ERROR in Vagrantfile"; exit 1; }
+
 # Start vagrant VM
 vagrant status | grep "not created" -q || { echo "ERROR created already"; exit 1; }
 
 case "$1" in
   "-hv")
+    # Hyper-V
     vagrant up --provider=hyperv
     ;;
   "-qu")
+    # QEMU
     #vagrant up --provider=libvirt
     ;;
   "-vw")
+    # vmware
     vagrant up
     ;;
   "-vb")
+    # VirtualBox
     vagrant up --provider=virtualbox
     ;;
   *)

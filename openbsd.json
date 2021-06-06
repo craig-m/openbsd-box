@@ -222,6 +222,7 @@
     "ssh_timeout": "7200s",
     "ssh_user_name": "puffy",
     "ssh_user_pass": "puffypass",
+    "version": "",
     "vm_boot_cmd": "/install -a -f /install.conf -m install \u0026\u0026 chroot /mnt < /setup.sh \u0026\u0026 reboot<wait><enter>",
     "vm_boot_setupsh": "ftp -o /setup.sh http://{{.HTTPIP}}:{{.HTTPPort}}/setup.sh<enter><wait>",
     "vm_cpus": "2",
