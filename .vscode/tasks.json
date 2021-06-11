@@ -48,16 +48,16 @@
             "problemMatcher": []
         },
         {
-            "label": "dev-build-hv",
+            "label": "dev-build-qu",
             "type": "shell",
             "osx": {
-                "command": "./build.sh -hv"
+                "command": "./build.sh -qu"
             },
             "linux": {
-                "command": "./build.sh -hv"
+                "command": "./build.sh -qu"
             },
             "windows": {
-                "command": "./build.ps1 -hv"
+                "command": "./build.ps1 -qu"
             },
             "problemMatcher": []
         },
