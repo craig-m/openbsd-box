@@ -65,6 +65,11 @@ variable "ssh_user_pass" {
   default = "puffypass"
 }
 
+variable "version" {
+  type    = string
+  default = ""
+}
+
 variable "vm_boot_cmd" {
   type    = string
   default = "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<wait><enter>"

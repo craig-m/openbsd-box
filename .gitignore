@@ -9,3 +9,13 @@ temp/
 packer_cache/
 local/*
 !local/.gitkeep
+# macos
+.DS_Store
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+._*

@@ -18,6 +18,12 @@ fi
 
 pkg_check
 
+# test services ok
+/etc/rc.d/ntpd check
+/etc/rc.d/sshd check
+/etc/rc.d/cron check
+/etc/rc.d/xenodm check
+
 # wait if rc.firsttime exists
 while test -e /etc/rc.firsttime; do
     sleep 3

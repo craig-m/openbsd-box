@@ -20,6 +20,48 @@
             "problemMatcher": []
         },
         {
+            "label": "dev-clean",
+            "type": "shell",
+            "osx": {
+                "command": "./clean.sh"
+            },
+            "linux": {
+                "command": "./clean.sh"
+            },
+            "windows": {
+                "command": "./clean.ps1"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "dev-build-vb",
+            "type": "shell",
+            "osx": {
+                "command": "./build.sh -vb"
+            },
+            "linux": {
+                "command": "./build.sh -vb"
+            },
+            "windows": {
+                "command": "./build.ps1 -vb"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "dev-build-hv",
+            "type": "shell",
+            "osx": {
+                "command": "./build.sh -hv"
+            },
+            "linux": {
+                "command": "./build.sh -hv"
+            },
+            "windows": {
+                "command": "./build.ps1 -hv"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "inspect",
             "type": "shell",
             "command": "packer inspect openbsd.json",

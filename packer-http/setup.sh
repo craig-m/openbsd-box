@@ -43,6 +43,7 @@ chown puffy:puffy /home/puffy/.Xresources
 
 
 # install some packages into base box
+# https://www.openbsd.org/faq/faq15.html
 pkg_add -uUv
 pkg_add -I \
     dmidecode \
