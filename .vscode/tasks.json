@@ -6,7 +6,8 @@
         {
             "label": "test",
             "type": "shell",
-            "command": "packer validate -syntax-only openbsd.json",
+            "command": "packer",
+            "args": ["validate", "-syntax-only", "openbsd.json"],
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -16,7 +17,8 @@
         {
             "label": "rsync-auto",
             "type": "shell",
-            "command": "vagrant rsync-auto",
+            "command": "vagrant",
+            "args": ["rsync-auto"],
             "problemMatcher": []
         },
         {
@@ -37,13 +39,16 @@
             "label": "dev-build-vb",
             "type": "shell",
             "osx": {
-                "command": "./build.sh -vb"
+                "command": "./build.sh",
+                "args": ["-vb"]
             },
             "linux": {
-                "command": "./build.sh -vb"
+                "command": "./build.sh",
+                "args": ["-vb"]
             },
             "windows": {
-                "command": "./build.ps1 -vb"
+                "command": "./build.ps1",
+                "args": ["-vb"]
             },
             "problemMatcher": []
         },
@@ -51,20 +56,24 @@
             "label": "dev-build-qu",
             "type": "shell",
             "osx": {
-                "command": "./build.sh -qu"
+                "command": "./build.sh",
+                "args": ["-qu"]
             },
             "linux": {
-                "command": "./build.sh -qu"
+                "command": "./build.sh",
+                "args": ["-qu"]
             },
             "windows": {
-                "command": "./build.ps1 -qu"
+                "command": "./build.ps1",
+                "args": ["-qu"]
             },
             "problemMatcher": []
         },
         {
             "label": "inspect",
             "type": "shell",
-            "command": "packer inspect openbsd.json",
+            "command": "packer",
+            "args": ["inspect", "openbsd.json"],
             "problemMatcher": []
         }
     ]
