@@ -7,10 +7,12 @@ param (
 # check input
 If ( $packbldtype -eq 'hv' )
 {
-    $packbldtype2 = "source.hyperv-iso.openbsd-hv"
+    # HyperV
+    $packbldtype2 = "hyperv-iso.openbsd-hv"
 } ElseIf ( $packbldtype -eq 'vb' )
 {
-    $packbldtype2 = "source.virtualbox-iso.openbsd-vb"
+    # VirtualBox
+    $packbldtype2 = "virtualbox-iso.openbsd-vb"
 } Else {
     Write-Host "[*] ERROR: wrong input"
     exit 1
@@ -40,7 +42,7 @@ try {
 
 # Build the box
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "$packerinput" packer.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "-parallel-builds=1", "$scriptloc/$packerinput" packer.exe
 } catch {
     Write-Host "ERROR building"
     exit 1;
