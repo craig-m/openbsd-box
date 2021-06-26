@@ -4,20 +4,20 @@ echo "[*] Building OpenBSD box."
 # script input flags
 case "$1" in
   "-hv")
-    packbldtype="openbsd-hv"
     echo "[*] packer HyperV build"
+    packbldtype="hyperv-iso.openbsd-hv"
     ;;
   "-qu")
-    packbldtype="openbsd-qu"
     echo "[*] packer QEMU build"
+    packbldtype="qemu.openbsd-qu"
     ;;
   "-vw")
-    packbldtype="openbsd-vw"
     echo "[*] packer VMWare build"
+    packbldtype="vmware-iso.openbsd-vw"
     ;;
   "-vb")
-    packbldtype="openbsd-vb"
     echo "[*] packer VirtualBox build"
+    packbldtype="virtualbox-iso.openbsd-vb"
     ;;
   *)
     packbldtype=""
@@ -34,8 +34,7 @@ case "$1" in
 esac
 
 # vars
-packerinput="openbsd.json"
-#packerinput="openbsd.json.pkr.hcl"
+packerinput="openbsd.pkr.hcl"
 
 export PACKER_LOG=2
 export PACKER_LOG_PATH=packer.log
@@ -61,6 +60,7 @@ case "$1" in
   "-hv")
     # Hyper-V
     vagrant up --provider=hyperv
+    vagrant ssh --command "uptime" --machine-readable
     ;;
   "-qu")
     # QEMU
@@ -69,10 +69,12 @@ case "$1" in
   "-vw")
     # vmware
     vagrant up
+    vagrant ssh --command "uptime" --machine-readable
     ;;
   "-vb")
     # VirtualBox
     vagrant up --provider=virtualbox
+    vagrant ssh --command "uptime" --machine-readable
     ;;
   *)
     packbldtype=""

@@ -1,22 +1,38 @@
 param (
     [string]$packbldtype = $( Read-Host "Select type use 'hv' or 'vb':" )
 )
-$packbldtype2 = -join('openbsd-', "$packbldtype");
 
 #requires -runasadministrator
 
+# check input
+If ( $packbldtype -eq 'hv' )
+{
+    $packbldtype2 = "source.hyperv-iso.openbsd-hv"
+} ElseIf ( $packbldtype -eq 'vb' )
+{
+    $packbldtype2 = "source.virtualbox-iso.openbsd-vb"
+} Else {
+    Write-Host "[*] ERROR: wrong input"
+    exit 1
+}
+
+# You can install Powershell on MacOS and Linux, but this script only works on Windows
+#
+# https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell
+
 Write-Host "[*] Building OpenBSD box."
 Write-Host "[*] type: $packbldtype2"
+$scriptloc = Get-Location
+Write-Host "[*] located in: $scriptloc"
 
 # vars
-$packerinput = "openbsd.json"
-#$packerinput = "openbsd.json.pkr.hcl"
+$packerinput = "openbsd.pkr.hcl"
 $env:PACKER_LOG = 2
 $env:PACKER_LOG_PATH = "packer.log"
 
 # Validate packer input
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$packerinput" packer.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$scriptloc/$packerinput" packer.exe
 } catch {
     Write-Host "ERROR validating $packerinput"
     exit 1;
@@ -52,6 +68,12 @@ try {
     Start-Process -NoNewWindow -Wait -ArgumentList "up" vagrant.exe
 } catch {
     Write-Host "ERROR starting VM"
+    exit 1;
+}
+try {
+    vagrant ssh --command "uptime" --machine-readable
+} catch {
+    Write-Host "ERROR SSHing into VM"
     exit 1;
 }
 

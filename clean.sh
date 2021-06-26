@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "[*] cleaning up"
+# note: will not remove openbsd install iso from packer_cache
 
 vagrant destroy -f
 vagrant box remove openbsd -f

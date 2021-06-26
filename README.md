@@ -2,26 +2,26 @@
 
 ![alt text](packer-http/puf150X129.gif "Puffy")
 
-An [OpenBSD](https://www.openbsd.org/) learning / play / dev box. Built by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
+An [OpenBSD](https://www.openbsd.org/) learning / play / dev VM to be built and run from your own desktop.
 
-## packer build of VM image
+Installed by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
 
-Check the packer json:
+---
+
+## build OpenBSD VM
+
+Packer will download the OpenBSD installation media `installXX.iso` for us and then handle the full installation start to finish automatically with the end result being a reusable VM image.
+
+Check the packer [HCL](https://github.com/hashicorp/hcl):
 
 ```shell
-packer validate openbsd.json
-packer inspect openbsd.json
-```
-
-Convert to [HCL](https://github.com/hashicorp/hcl) with the command:
-
-```shell
-packer hcl2_upgrade -with-annotations openbsd.json
+packer validate openbsd.pkr.hcl
+packer inspect openbsd.pkr.hcl
 ```
 
 ### Debugging packer builds
 
-Logging is set by changing this environment variable.
+Logging is set by changing this environment variable, if anything goes wrong verbosity can be increased.
 
 Windows (powershell):
 
@@ -37,52 +37,23 @@ export PACKER_LOG=1
 
 You can use the env var `PACKER_LOG_PATH=/tmp/packer.log` to set a log file.
 
-#### HyperV
-
-Windows 10 build:
-
-```shell
-packer build -only=openbsd-hv -force openbsd.json
-```
-
 #### VirtualBox
 
-Mac / Win / Linux build:
+[VirtualBox](https://www.virtualbox.org/) [build](https://www.packer.io/docs/builders/virtualbox)
 
 ```shell
-packer build -only=openbsd-vb -force openbsd.json
+packer build -only=openbsd-vb -force openbsd.pkr.hcl
 ```
 
-#### QEMU
+#### HyperV
 
-Mac / Win / Linux build:
+Hyper-V [build](https://www.packer.io/docs/builders/hyperv) on Windows desktops
 
 ```shell
-packer build -only=openbsd-qu -force openbsd.json
+packer build -only=openbsd-hv -force openbsd.pkr.hcl
 ```
 
-You will need a [VNC](https://en.wikipedia.org/wiki/Virtual_Network_Computing) client to monitor progress.
-
-#### VMWare
-
-Mac / Win / Linux build:
-
-```shell
-packer build -only=openbsd-vw -force openbsd.json
-```
-
-Vmware needs testing still.
-
-## run OpenBSD VM with Vagrant
-
-Imports our Box and create a VM from it:
-
-```shell
-vagrant validate Vagrantfile
-vagrant up
-```
-
-### Hyper-V notes
+##### Hyper-V notes
 
 You can enable nesting on HyperV. On an existing shutdown Vagrant vm:
 
@@ -92,13 +63,39 @@ Set-VMProcessor -VMName openbsd -ExposeVirtualizationExtensions $true
 
 You need to do this to use [vmm](https://www.openbsd.org/faq/faq16.html), the OpenBSD hypervisor.
 
-### Libvirt notes
+#### QEMU
 
-Libvirt is not one of the standard providers, you need to install the plugin first.
+QEMU is a generic and open source machine emulator and virtualizer.
+
+[QEMU](https://www.qemu.org/) [build](https://www.packer.io/docs/builders/qemu)
 
 ```shell
-vagrant plugin install vagrant-libvirt
-vagrant up --provider=libvirt
+packer build -only=openbsd-qu -force openbsd.pkr.hcl
+```
+
+You will need a [VNC](https://en.wikipedia.org/wiki/Virtual_Network_Computing) client to monitor progress.
+
+#### VMWare
+
+VMware [build](https://www.packer.io/docs/builders/vmware)
+
+```shell
+packer build -only=openbsd-vw -force openbsd.pkr.hcl
+```
+
+Vmware needs testing still.
+
+---
+
+## run OpenBSD VM
+
+Vagrant is a tool for managing portable virtual machines, it's a wrapper on virtualization.
+
+This imports the Box we just made and will then create a VM from it:
+
+```shell
+vagrant validate Vagrantfile
+vagrant up
 ```
 
 ### use
@@ -125,6 +122,8 @@ Remove everything:
 vagrant destroy
 vagrant box remove openbsd
 ```
+
+---
 
 ## scripts
 
