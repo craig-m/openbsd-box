@@ -18,8 +18,8 @@ CODE_MNT_OPT = ["dmode=775,fmode=644"]
 # inline script used by action trigger
 $inlinescript_post = <<-SCRIPT
 echo '-------------------------------------------------------------------';
-echo 'Hello'
-uname -a
+uname -a;
+uptime;
 echo '-------------------------------------------------------------------';
 SCRIPT
 
@@ -43,6 +43,7 @@ Vagrant.configure("2") do |config|
     config.ssh.forward_agent = false
     config.ssh.compression = false
     config.ssh.shell = "/bin/ksh"
+    config.ssh.sudo_command = "doas -n %c"
 
     def is_windows
         RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/

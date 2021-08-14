@@ -10,8 +10,8 @@
         |_|                                    
                                                
                                                
-Inside the Vagrant VM this folder is mounted at
+Inside the Vagrant VM this folder is mounted at: /opt/vmcode/
 
-/opt/vmcode/
+It contains random scripts to optionally run.. .
 
 eof

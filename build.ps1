@@ -20,7 +20,7 @@ If ( $packbldtype -eq 'hv' )
 #
 # https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell
 
-Write-Host "[*] Building OpenBSD box."
+Write-Host "[*] Building and starting OpenBSD box."
 Write-Host "[*] type: $packbldtype2"
 $scriptloc = Get-Location
 Write-Host "[*] located in: $scriptloc"

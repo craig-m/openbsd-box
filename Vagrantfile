@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
     config.ssh.keep_alive = true
     config.ssh.shell = "/bin/ksh"
     config.ssh.forward_agent = false
+    config.ssh.sudo_command = "doas -n %c"
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
     #
@@ -37,34 +38,14 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "openbsd" do |mainvm|
         config.vm.hostname = "openbsd"
-        #
-        # provider specific conf
-        #
-        # ------ Windows Hyper-V ------
-        config.vm.provider :hyperv do |hpv, override|
-            hpv.memory = MY_VM_RAM
-            hpv.maxmemory = MY_VM_RAM
-            hpv.cpus = MY_VM_CPU
-            override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
-        end
-        #
-        # ------ Libvirt ------
-        config.vm.provider :libvirt do |libv, override|
-            override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
-        end
-        #
-        # ------ KVM host ------
-        config.vm.provider :kvm do |kvm, override|
-        end
-        #
-        # ------ VirtualBox ------
-        config.vm.provider :virtualbox do |vbox, override|
-            vbox.gui = false
-            override.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", mount_options: CODE_MNT_OPT
-        end
-        #
-    end
 
+        config.vm.synced_folder MY_VM_CODE, CODE_MNT, type: "rsync", 
+            mount_options: CODE_MNT_OPT,
+            rsync__exclude: ".git/ .vagrant/",
+            rsync__rsync_path: "doas rsync",
+            rsync__args: "--archive --delete --verbose"
+
+    end
 
     #
     # provision tasks

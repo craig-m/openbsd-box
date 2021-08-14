@@ -4,7 +4,7 @@
 
 An [OpenBSD](https://www.openbsd.org/) learning / play / dev VM to be built and run from your own desktop.
 
-Installed by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
+Created by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
 
 ---
 
@@ -127,7 +127,15 @@ vagrant box remove openbsd
 
 ## scripts
 
-The steps above have been automated in build.sh/ps1, and clean.sh/ps1.
+The steps above have been automated in build and clean .sh/.ps1.
+
+```
+./build.sh
+vagrant ssh
+echo "do things"
+exit
+./clean.sh
+```
 
 ## links
 

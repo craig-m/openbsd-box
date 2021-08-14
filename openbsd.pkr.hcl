@@ -3,7 +3,7 @@
 # generated from openbsd.json
 #
 packer {
-  required_version = ">= 1.7.0"
+  required_version = ">= 1.7.2"
 }
 
 #
@@ -34,7 +34,7 @@ variable "iso_url" {
 
 variable "shutdown_cmd" {
   type    = string
-  default = "sudo shutdown -h -p now"
+  default = "doas -n shutdown -h -p now"
 }
 
 variable "ssh_port" {
@@ -55,6 +55,7 @@ variable "ssh_user_name" {
 variable "ssh_user_pass" {
   type    = string
   default = "puffypass"
+  sensitive  = true
 }
 
 variable "version" {
@@ -213,14 +214,14 @@ build {
 
   provisioner "shell" {
     expect_disconnect = false
-    inline            = ["sudo /opt/update.sh"]
+    inline            = ["doas -n /opt/update.sh"]
     pause_before      = "30s"
     timeout           = "10m0s"
   }
 
   provisioner "shell" {
     expect_disconnect = true
-    inline            = ["sudo reboot"]
+    inline            = ["doas -n reboot"]
     pause_before      = "30s"
     timeout           = "6m0s"
   }

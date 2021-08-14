@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "[*] Building OpenBSD box."
+echo "[*] Building and starting OpenBSD box."
 
 # script input flags
 case "$1" in
