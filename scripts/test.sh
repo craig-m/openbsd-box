@@ -3,7 +3,7 @@
 # run by Packer post-processor, and on Vagrant on provision/up.
 
 echo "Testing script"
-sleep 10
+sleep 5
 
 set -e
 set -x
@@ -22,6 +22,8 @@ pkg_check
 /etc/rc.d/ntpd check
 /etc/rc.d/sshd check
 /etc/rc.d/cron check
+/etc/rc.d/smtpd check
+/etc/rc.d/pflogd check
 /etc/rc.d/xenodm check
 
 # wait if rc.firsttime exists
@@ -30,5 +32,5 @@ while test -e /etc/rc.firsttime; do
 done
 echo '/etc/rc.firsttime GONE'
 
-sleep 10
+sleep 5
 echo "test.sh finished"

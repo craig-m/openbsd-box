@@ -2,6 +2,8 @@
 # OpenBSD packer HCL
 # generated from openbsd.json
 #
+
+# current 1.7.4
 packer {
   required_version = ">= 1.7.2"
 }
@@ -237,10 +239,12 @@ build {
   post-processor "artifice" {
     files = ["output-openbsd-vb/openbsd-disk001.vmdk", "output-openbsd-vb/vbox-openbsd.ovf"]
   }
+
   post-processor "manifest" {
     output     = "boxes/manifest.json"
     strip_path = true
   }
+
   post-processor "vagrant" {
     keep_input_artifact  = true
     compression_level    = 9
@@ -248,8 +252,10 @@ build {
     output               = "boxes/OpenBSD.box"
     vagrantfile_template = "templates/vagrantfile.rb"
   }
+
   post-processor "checksum" {
     checksum_types = ["sha512"]
     output         = "boxes/{{ .BuildName }}.checksum"
   }
+
 }

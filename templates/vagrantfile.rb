@@ -2,7 +2,8 @@
 # OpenBSD Vagrantfile template
 #
 
-Vagrant.require_version ">= 2.2.14"
+# current 2.2.18
+Vagrant.require_version ">= 2.2.16"
 
 # openbsd VM options
 MY_VM_RAM = "4096"
@@ -35,8 +36,6 @@ Vagrant.configure("2") do |config|
     config.vm.hostname = "openbsd"
     config.vm.box_check_update = false
     config.vm.boot_timeout = 300
-    config.ssh.username = "root"
-    config.ssh.password = "puffypass"
     config.ssh.guest_port = 22
     config.ssh.insert_key = true
     config.ssh.keep_alive = true

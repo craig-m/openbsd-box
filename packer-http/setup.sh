@@ -4,7 +4,7 @@
 # before the machine is exported and saved as a box.
 
 echo "OpenBSD setup.sh setup script"
-sleep 10
+sleep 5
 
 set -e
 set -x
@@ -34,6 +34,9 @@ echo "xenodm_flags=" >> /etc/rc.conf.local
 # login window
 cp /etc/X11/xenodm/Xsetup_0 /etc/X11/xenodm/.Xsetup_0.bak
 
+# shell prompt
+echo 'export PS1="\u@\H \W \$ "' >> /root/.profile
+echo 'export PS1="\u@\H \W \$ "' >> /home/${newuser}/.profile
 
 # create .Xresources
 cat <<EOF > /home/${newuser}/.Xresources
@@ -41,10 +44,10 @@ XTerm*faceName:Terminus*
 XTerm*faceSize:14
 EOF
 
-chown ${newuser}:${newuser} /home/${newuser}/.Xresources
-
 touch /home/${newuser}/.hushlogin
-chown ${newuser}:${newuser} /home/${newuser}/.hushlogin
+mkdir /home/${newuser}/bin/
+
+chown -R ${newuser}:${newuser} /home/${newuser}/*
 
 
 # install some packages into base box
@@ -56,7 +59,8 @@ pkg_add -I \
     rsync-- \
     dos2unix \
     vim--no_x11 \
-    mutt--
+    mutt-- \
+    xz
 
 
 # allow user to become root
@@ -64,7 +68,7 @@ echo "permit nopass ${newuser}" >> /etc/doas.conf
 
 
 # tighten homedir perm
-chmod 750 /home/${newuser}
+#chmod 750 /home/${newuser}
 
 # allow root ssh login
 # sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
@@ -75,6 +79,7 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4
 
 
 # create update/patch script
+# packer will run this later
 cat <<EOF > /opt/update.sh
 #!/bin/ksh
 logger "update.sh started"
@@ -102,10 +107,6 @@ fw_update
 # patch OpenBSD
 syspatch
 
-# Upgrade to next release of OpenBSD
-#sysupgrade
-#sysmerge
-
 sleep 3
 sync
 
@@ -115,10 +116,7 @@ EOF
 
 chmod +x /opt/update.sh
 
-echo "list syspatches"
-syspatch -l
-
-sleep 10
+sleep 5
 sync
 
 touch /opt/.setup.sh

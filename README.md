@@ -2,15 +2,13 @@
 
 ![alt text](packer-http/puf150X129.gif "Puffy")
 
-An [OpenBSD](https://www.openbsd.org/) learning / play / dev VM to be built and run from your own desktop.
+An [OpenBSD](https://www.openbsd.org/) learning / play / dev [VM](https://en.wikipedia.org/wiki/Virtual_machine) to be built and run from your own desktop.
 
-Created by [Packer](https://www.packer.io/), and run by [Vagrant](https://www.vagrantup.com/).
-
----
+Created by [Packer](https://www.packer.io/) and run by [Vagrant](https://www.vagrantup.com/).
 
 ## build OpenBSD VM
 
-Packer will download the OpenBSD installation media `installXX.iso` for us and then handle the full installation start to finish automatically with the end result being a reusable VM image.
+Packer will download the OpenBSD installation media, [stable](https://www.openbsd.org/stable.html) `installXX.iso`, for us and then handle the full installation start to finish automatically with the end result being a reusable VM image.
 
 Check the packer [HCL](https://github.com/hashicorp/hcl):
 
@@ -85,8 +83,6 @@ packer build -only=openbsd-vw -force openbsd.pkr.hcl
 
 Vmware needs testing still.
 
----
-
 ## run OpenBSD VM
 
 Vagrant is a tool for managing portable virtual machines, it's a wrapper on virtualization.
@@ -123,18 +119,16 @@ vagrant destroy
 vagrant box remove openbsd
 ```
 
----
-
 ## scripts
 
 The steps above have been automated in build and clean .sh/.ps1.
 
-```
-./build.sh
+```shell
+./build.ps1
 vagrant ssh
 echo "do things"
 exit
-./clean.sh
+./clean.ps1
 ```
 
 ## links
@@ -147,6 +141,10 @@ Useful documentation + code + guides
 **guides**
 * https://openbsdjumpstart.org/
 * https://why-openbsd.rocks/fact/
+
+**github**
+* https://github.com/ligurio/awesome-openbsd
+* https://github.com/sirredbeard/Awesome-UNIX
 
 **packer projects**
 * https://github.com/upperstream/packer-templates/tree/master/openbsd

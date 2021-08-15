@@ -10,7 +10,7 @@
 
 echo "installing dwm"
 
-pkg_add -I dwm dmenu st
+doas pkg_add -I dwm dmenu st
 
 cat << EOF > /home/puffy/.xinitrc
 st &
