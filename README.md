@@ -100,15 +100,10 @@ Login:
 
 ```shell
 vagrant ssh
-```
-
-Learn OpenBSD.
-
-```shell
-man afterboot
 man intro
-man security
 ```
+
+You might want to use `vagrant rsync-auto` in a separate shell.
 
 ### clean up
 
@@ -121,12 +116,12 @@ vagrant box remove openbsd
 
 ## scripts
 
-The steps above have been automated in build and clean .sh/.ps1.
+The steps above have been automated in build and clean Shell and PowerShell.
 
 ```shell
 ./build.ps1
 vagrant ssh
-echo "do things"
+tmux
 exit
 ./clean.ps1
 ```
@@ -134,6 +129,11 @@ exit
 ## links
 
 Useful documentation + code + guides
+
+```shell
+man afterboot
+man security
+```
 
 **OpenBSD Docs**
 * https://www.openbsd.org/faq/

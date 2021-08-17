@@ -108,6 +108,11 @@ Vagrant.configure("2") do |config|
         t.run_remote = {inline: $inlinescript_post, :privileged => false}
     end
 
+    # prevent TLS error "ocsp response not current" from incorrect time
+    config.trigger.after [:resume] do |t|
+        t.run_remote = {inline: "rdate pool.ntp.org", :privileged => true}
+    end
+
 
     #
     # Finished
