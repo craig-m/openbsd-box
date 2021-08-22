@@ -21,10 +21,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = false
     config.ssh.username = "puffy"
     config.ssh.insert_key = true
-    config.ssh.keep_alive = true
-    config.ssh.shell = "/bin/ksh"
     config.ssh.forward_agent = false
-    config.ssh.sudo_command = "doas -n %c"
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
     # Virtual machines
@@ -37,7 +34,7 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.provision :shell,
-        inline: "echo 'Hello, vm.provision tasks running.'"
+        inline: "echo 'Hello, vm.provision tasks running!'"
 
     config.vm.provision :shell,
         :privileged => true, 

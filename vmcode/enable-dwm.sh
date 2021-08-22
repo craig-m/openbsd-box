@@ -12,17 +12,15 @@ echo "installing dwm"
 
 doas pkg_add -I dwm dmenu st
 
-cat << EOF > /home/puffy/.xinitrc
+cat << EOF > ~/.xinitrc
 st &
 exec dwm
 EOF
 
-cat > /home/puffy/.xsession << EOF
+cat > ~/.xsession << EOF
 #!/bin/ksh
 st &
 exec dwm
 EOF
-
-chown puffy /home/puffy/.xinitrc /home/puffy/.xsession
 
 echo "finished installing dwm"

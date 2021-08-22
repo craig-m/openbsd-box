@@ -107,9 +107,10 @@ You might want to use `vagrant rsync-auto` in a separate shell.
 
 ### clean up
 
-Remove everything:
+Remove everything when finished:
 
 ```shell
+exit
 vagrant destroy
 vagrant box remove openbsd
 ```

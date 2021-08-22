@@ -5,7 +5,7 @@
 # current 2.2.18
 Vagrant.require_version ">= 2.2.16"
 
-# openbsd VM options
+# VM resources
 MY_VM_RAM = "4096"
 MY_VM_CPU = "4"
 MY_VM_CODE = "./vmcode/"
@@ -15,6 +15,7 @@ VAGRANT_API_VER = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
 CODE_MNT = "/opt/vmcode"
 CODE_MNT_OPT = ["dmode=775,fmode=644"]
+
 
 # inline script used by action trigger
 $inlinescript_post = <<-SCRIPT
@@ -37,16 +38,12 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = false
     config.vm.boot_timeout = 300
     config.ssh.guest_port = 22
-    config.ssh.insert_key = true
     config.ssh.keep_alive = true
     config.ssh.forward_agent = false
     config.ssh.compression = false
+    # ksh - public domain Korn shell!
     config.ssh.shell = "/bin/ksh"
     config.ssh.sudo_command = "doas -n %c"
-
-    def is_windows
-        RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    end
 
 
     #
@@ -117,7 +114,6 @@ Vagrant.configure("2") do |config|
     #
     # Finished
     #
-
     config.vm.post_up_message = "----- OpenBSD box up -----"
 
 end

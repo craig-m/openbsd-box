@@ -11,7 +11,6 @@ set -x
 
 newuser="puffy"
 
-
 # create /opt/ for non-standard things.
 if test -d /opt; then
     echo "/opt already exists"
@@ -62,10 +61,8 @@ pkg_add -I \
     mutt-- \
     xz
 
-
 # allow user to become root
 echo "permit nopass ${newuser}" >> /etc/doas.conf
-
 
 # tighten homedir perm
 #chmod 750 /home/${newuser}
@@ -73,8 +70,7 @@ echo "permit nopass ${newuser}" >> /etc/doas.conf
 # allow root ssh login
 # sed -i -e "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 
-# Add insecure vagrant key
-# https://github.com/hashicorp/vagrant/tree/main/keys
+# Add insecure default vagrant key - https://github.com/hashicorp/vagrant/tree/main/keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key" >> /home/${newuser}/.ssh/authorized_keys
 
 
@@ -84,9 +80,6 @@ cat <<EOF > /opt/update.sh
 #!/bin/ksh
 logger "update.sh started"
 echo "update.sh started" >> /opt/vmsetup.log
-
-patchnum=$(syspatch -l | wc -l | tr -d " \t")
-echo "currently ${patchnum} patches applied"
 
 # wait if rc.firsttime exists
 while test -e /etc/rc.firsttime; do
@@ -116,9 +109,10 @@ EOF
 
 chmod +x /opt/update.sh
 
-sleep 5
-sync
-
 touch /opt/.setup.sh
 echo "setup.sh finished" >> /opt/vmsetup.log
 logger "setup.sh finished"
+
+# Finished
+sleep 5
+sync

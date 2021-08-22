@@ -7,7 +7,7 @@
             "label": "test",
             "type": "shell",
             "command": "packer",
-            "args": ["validate", "-syntax-only", "openbsd.json"],
+            "args": ["validate", "-syntax-only", "openbsd.pkr.hcl"],
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -73,7 +73,7 @@
             "label": "inspect",
             "type": "shell",
             "command": "packer",
-            "args": ["inspect", "openbsd.json"],
+            "args": ["inspect", "openbsd.pkr.hcl"],
             "problemMatcher": []
         }
     ]
