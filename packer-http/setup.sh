@@ -56,6 +56,7 @@ pkg_add -I \
     dmidecode \
     curl \
     rsync-- \
+    git \
     dos2unix \
     vim--no_x11 \
     mutt-- \

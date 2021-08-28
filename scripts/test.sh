@@ -47,7 +47,7 @@ check_pkginst(){
     done
 }
 
-check_pkginst rsync curl vim
+check_pkginst rsync curl xz vim git
 
 
 # wait if rc.firsttime exists

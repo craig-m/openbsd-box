@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "test",
+            "label": "validate-packer",
             "type": "shell",
             "command": "packer",
             "args": ["validate", "-syntax-only", "openbsd.pkr.hcl"],
@@ -13,6 +13,13 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "validate-vagrant",
+            "type": "shell",
+            "command": "vagrant",
+            "args": ["validate", "Vagrantfile"],
+            "problemMatcher": [],
         },
         {
             "label": "rsync-auto",
