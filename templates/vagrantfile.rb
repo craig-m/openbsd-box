@@ -5,16 +5,9 @@
 # current 2.2.18
 Vagrant.require_version ">= 2.2.16"
 
-# VM resources
-MY_VM_RAM = "4096"
-MY_VM_CPU = "4"
-MY_VM_CODE = "./vmcode/"
-
 # vagrant options
 VAGRANT_API_VER = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
-CODE_MNT = "/opt/vmcode"
-CODE_MNT_OPT = ["dmode=775,fmode=644"]
 
 
 # inline script used by action trigger
@@ -114,6 +107,7 @@ Vagrant.configure("2") do |config|
     #
     # Finished
     #
+
     config.vm.post_up_message = "----- OpenBSD box up -----"
 
 end

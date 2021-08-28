@@ -2,16 +2,10 @@
 # OpenBSD Vagrant box
 #
 
-# vm vars
-MY_VM_RAM = "2048"
-MY_VM_CPU = "2"
+# shared folder
 MY_VM_CODE = "./vmcode/"
 CODE_MNT = "/opt/vmcode"
 CODE_MNT_OPT = ["dmode=775,fmode=644"]
-
-# vagrant options
-VAGRANT_API_VER = "2"
-VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
 
 Vagrant.configure("2") do |config|
 
@@ -32,9 +26,6 @@ Vagrant.configure("2") do |config|
             mount_options: CODE_MNT_OPT,
             rsync__rsync_path: "doas rsync"
     end
-
-    config.vm.provision :shell,
-        inline: "echo 'Hello, vm.provision tasks running!'"
 
     config.vm.provision :shell,
         :privileged => true, 

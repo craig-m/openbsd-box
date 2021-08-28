@@ -1,6 +1,12 @@
 #!/bin/bash
 echo "[*] Building and starting OpenBSD box."
 
+# no root use
+if [[ root = "$USER" ]]; then
+  echo "Error: do not run as root";
+  exit 1;
+fi
+
 # script input flags
 case "$1" in
   "-hv")

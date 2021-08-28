@@ -87,7 +87,7 @@ variable "vm_disk" {
 
 variable "vm_mem" {
   type    = string
-  default = "4096"
+  default = "2048"
 }
 
 variable "vm_nic_mac" {
