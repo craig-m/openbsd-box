@@ -8,12 +8,14 @@ packer {
   required_version = ">= 1.7.2"
 }
 
+
 #
 # All generated input variables will be of 'string' type as this is how Packer JSON
 # views them; you can change their type later on. Read the variables type
 # constraints documentation
 # https://www.packer.io/docs/templates/hcl_templates/variables#type-constraints for more info.
 #
+
 variable "headless" {
   type    = string
   default = "false"
@@ -60,6 +62,12 @@ variable "ssh_user_pass" {
   sensitive  = true
 }
 
+variable "ssh_root_pass" {
+  type    = string
+  default = "rootpass"
+  sensitive  = true
+}
+
 variable "version" {
   type    = string
   default = ""
@@ -95,11 +103,16 @@ variable "vm_nic_mac" {
   default = "9c0a914daaff"
 }
 
+
 #
 # source blocks are generated from your builders; a source can be referenced in
 # build blocks. A build block runs provisioner and post-processors on a
 # source. Read the documentation for source blocks here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/source
+#
+
+#
+# Hyper-V
 #
 source "hyperv-iso" "openbsd-hv" {
   boot_command                     = ["S<enter><wait>", "dhclient hvn0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
@@ -114,7 +127,10 @@ source "hyperv-iso" "openbsd-hv" {
   generation                       = 1
   guest_additions_mode             = "disable"
   headless                         = "${var.headless}"
-  http_directory                   = "${var.http_dir}"
+  http_content                     = {
+    "/install.conf"                = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
+    "/setup.sh"                    = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  }
   iso_checksum                     = "${var.iso_checksum}"
   iso_url                          = "${var.iso_url}"
   mac_address                      = "${var.vm_nic_mac}"
@@ -129,6 +145,9 @@ source "hyperv-iso" "openbsd-hv" {
   vm_name                          = "openbsd-hv"
 }
 
+#
+# QEMU
+#
 source "qemu" "openbsd-qu" {
   boot_command        = ["<wait5>S<enter><wait5>", "dhclient vio0<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait           = "40s"
@@ -139,7 +158,10 @@ source "qemu" "openbsd-qu" {
   disk_size           = "${var.vm_disk}"
   format              = "qcow2"
   headless            = "${var.headless}"
-  http_directory      = "${var.http_dir}"
+  http_content         = {
+    "/install.conf"    = templatefile( "./templates/install-qemu.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
+    "/setup.sh"        = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  }
   iso_checksum        = "${var.iso_checksum}"
   iso_url             = "${var.iso_url}"
   memory              = "${var.vm_mem}"
@@ -154,6 +176,9 @@ source "qemu" "openbsd-qu" {
   vm_name             = "openbsd-qu"
 }
 
+#
+# VirtualBox
+#
 source "virtualbox-iso" "openbsd-vb" {
   boot_command         = ["S<enter><wait>", "dhclient em0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait            = "20s"
@@ -163,7 +188,10 @@ source "virtualbox-iso" "openbsd-vb" {
   guest_additions_mode = "disable"
   guest_os_type        = "OpenBSD_64"
   headless             = "${var.headless}"
-  http_directory       = "${var.http_dir}"
+  http_content         = {
+    "/install.conf"    = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
+    "/setup.sh"        = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  }
   iso_checksum         = "${var.iso_checksum}"
   iso_url              = "${var.iso_url}"
   memory               = "${var.vm_mem}"
@@ -179,6 +207,9 @@ source "virtualbox-iso" "openbsd-vb" {
   vrdp_port_min        = 11000
 }
 
+#
+# VMWare
+#
 source "vmware-iso" "openbsd-vw" {
   boot_command     = ["S<enter><wait>", "dhclient vio0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait        = "30s"
@@ -186,7 +217,10 @@ source "vmware-iso" "openbsd-vw" {
   cpus             = "${var.vm_cpus}"
   disk_size        = "${var.vm_disk}"
   headless         = "${var.headless}"
-  http_directory   = "${var.http_dir}"
+  http_content       = {
+    "/install.conf"  = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
+    "/setup.sh"      = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  }
   iso_checksum     = "${var.iso_checksum}"
   iso_url          = "${var.iso_url}"
   memory           = "${var.vm_mem}"
@@ -206,11 +240,13 @@ source "vmware-iso" "openbsd-vw" {
   }
 }
 
+
 #
 # a build block invokes sources and runs provisioning steps on them. The
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 #
+
 build {
   sources = ["source.hyperv-iso.openbsd-hv", "source.qemu.openbsd-qu", "source.virtualbox-iso.openbsd-vb", "source.vmware-iso.openbsd-vw"]
 

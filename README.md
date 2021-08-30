@@ -1,6 +1,6 @@
 # OpenBSD-box
 
-![alt text](packer-http/puf150X129.gif "Puffy")
+![alt text](docs/puf150X129.gif "Puffy")
 
 An [OpenBSD](https://www.openbsd.org/) learning / play / dev [VM](https://en.wikipedia.org/wiki/Virtual_machine) to be built and run from your own desktop.
 
