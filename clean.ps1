@@ -3,8 +3,8 @@
 Write-Host "[*] cleaning up"
 # note: will not remove openbsd install iso from packer_cache
 
-vagrant destroy -f
-vagrant box remove openbsd -f
+Start-Process -NoNewWindow -Wait -ArgumentList "destroy", "-f" vagrant
+Start-Process -NoNewWindow -Wait -ArgumentList "box", "remove", "openbsd", "-f" vagrant
 
 Remove-Item -Force -Recurse -ErrorAction Ignore output-openbsd-*
 Remove-Item -Force -ErrorAction Ignore boxes/manifest.json

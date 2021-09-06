@@ -1,4 +1,5 @@
-# Git ignore files:
+# Git ignore
+#
 *.log
 .vagrant/
 boxes/
@@ -9,7 +10,11 @@ temp/
 packer_cache/
 local/*
 !local/.gitkeep
-# macos
+variables.pkr.hcl
+variables.json
+#
+# MacOS
+#
 .DS_Store
 .AppleDouble
 .LSOverride

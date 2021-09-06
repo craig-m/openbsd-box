@@ -47,6 +47,7 @@ export PACKER_LOG_PATH=packer.log
 
 echo "[*] using config: ${packerinput}"
 
+
 # Validate packer input
 packer validate -syntax-only ${packerinput} || { echo "ERROR validating ${packerinput}"; exit 1; }
 

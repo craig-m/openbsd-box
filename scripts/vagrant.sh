@@ -1,6 +1,6 @@
 #!/bin/ksh
 
-# run by Vagrant on provision/up (called in Vagrantfile)
+# run by Vagrant on provision/up
 
 echo "vagrant.sh running"
 

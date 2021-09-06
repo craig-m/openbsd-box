@@ -8,7 +8,7 @@ Created by [Packer](https://www.packer.io/) and run by [Vagrant](https://www.vag
 
 ## build OpenBSD VM
 
-Packer will download the OpenBSD installation media, [stable](https://www.openbsd.org/stable.html) `installXX.iso`, for us and then handle the full installation start to finish automatically with the end result being a reusable VM image.
+Packer will download the OpenBSD installation media, [stable](https://www.openbsd.org/stable.html) `installXX.iso`, and then handle the full install start to finish - all automatically - with the end result being a reusable image to create virtual machines from.
 
 Check the packer [HCL](https://github.com/hashicorp/hcl):
 
@@ -117,7 +117,7 @@ vagrant box remove openbsd
 
 ## scripts
 
-The steps above have been automated in build and clean Shell and PowerShell.
+The steps above have been automated in `build.{sh,ps1}` and `clean.{sh,ps1}`.
 
 ```shell
 ./build.ps1
@@ -126,6 +126,10 @@ tmux
 exit
 ./clean.ps1
 ```
+
+For better or worse, you can install [Powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) on MacOS and Linux.
+
+Win 10 includes Windows [Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) which Vagrant also [supports WSL](https://www.vagrantup.com/docs/other/wsl).
 
 ## links
 
@@ -153,4 +157,3 @@ man security
 
 **packer plugins**
 * https://github.com/double-p/vagrant-openbsd
-

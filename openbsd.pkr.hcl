@@ -1,6 +1,5 @@
 #
 # OpenBSD packer HCL
-# generated from openbsd.json
 #
 
 # current 1.7.4
@@ -10,10 +9,8 @@ packer {
 
 
 #
-# All generated input variables will be of 'string' type as this is how Packer JSON
-# views them; you can change their type later on. Read the variables type
-# constraints documentation
-# https://www.packer.io/docs/templates/hcl_templates/variables#type-constraints for more info.
+# variables
+# https://www.packer.io/docs/templates/hcl_templates/variables#type-constraints
 #
 
 variable "headless" {
@@ -105,9 +102,7 @@ variable "vm_nic_mac" {
 
 
 #
-# source blocks are generated from your builders; a source can be referenced in
-# build blocks. A build block runs provisioner and post-processors on a
-# source. Read the documentation for source blocks here:
+# source blocks
 # https://www.packer.io/docs/templates/hcl_templates/blocks/source
 #
 
@@ -158,9 +153,9 @@ source "qemu" "openbsd-qu" {
   disk_size           = "${var.vm_disk}"
   format              = "qcow2"
   headless            = "${var.headless}"
-  http_content         = {
-    "/install.conf"    = templatefile( "./templates/install-qemu.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
-    "/setup.sh"        = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  http_content        = {
+    "/install.conf"   = templatefile( "./templates/install-qemu.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
+    "/setup.sh"       = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
   }
   iso_checksum        = "${var.iso_checksum}"
   iso_url             = "${var.iso_url}"
@@ -242,8 +237,7 @@ source "vmware-iso" "openbsd-vw" {
 
 
 #
-# a build block invokes sources and runs provisioning steps on them. The
-# documentation for build blocks can be found here:
+# build block
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 #
 
@@ -283,10 +277,11 @@ build {
 
   post-processor "vagrant" {
     keep_input_artifact  = true
-    compression_level    = 9
+    compression_level    = 0
     include              = ["templates/info.json", "scripts/test.sh"]
     output               = "boxes/OpenBSD.box"
     vagrantfile_template = "templates/vagrantfile.rb"
+    vagrantfile_template_generated = false
   }
 
   post-processor "checksum" {

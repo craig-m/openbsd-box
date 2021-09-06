@@ -18,10 +18,6 @@ If ( $packbldtype -eq 'hv' )
     exit 1
 }
 
-# You can install Powershell on MacOS and Linux, but this script only works on Windows
-#
-# https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell
-
 Write-Host "[*] Building and starting OpenBSD box."
 Write-Host "[*] type: $packbldtype2"
 $scriptloc = Get-Location
@@ -32,9 +28,10 @@ $packerinput = "openbsd.pkr.hcl"
 $env:PACKER_LOG = 2
 $env:PACKER_LOG_PATH = "packer.log"
 
+
 # Validate packer input
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$scriptloc/$packerinput" packer.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$scriptloc/$packerinput" packer
 } catch {
     Write-Host "ERROR validating $packerinput"
     exit 1;
@@ -42,7 +39,7 @@ try {
 
 # Build the box
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "-parallel-builds=1", "$scriptloc/$packerinput" packer.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "-parallel-builds=1", "$scriptloc/$packerinput" packer
 } catch {
     Write-Host "ERROR building"
     exit 1;
@@ -59,7 +56,7 @@ if (Test-Path ./boxes/OpenBSD.box) {
 
 # Validate Vagrantfile
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList "validate", ".\Vagrantfile" vagrant.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList "validate", ".\Vagrantfile" vagrant
 } catch {
     Write-Host "ERROR in Vagrantfile"
     exit 1;
@@ -67,13 +64,13 @@ try {
 
 # Start Vagrant VM
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList "up" vagrant.exe
+    Start-Process -NoNewWindow -Wait -ArgumentList "up" vagrant
 } catch {
     Write-Host "ERROR starting VM"
     exit 1;
 }
 try {
-    vagrant ssh --command "uptime" --machine-readable
+    Start-Process -NoNewWindow -Wait -ArgumentList "ssh", "--command", "uptime", "--machine-readable" vagrant
 } catch {
     Write-Host "ERROR SSHing into VM"
     exit 1;
