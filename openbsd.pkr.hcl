@@ -25,12 +25,12 @@ variable "http_dir" {
 
 variable "iso_checksum" {
   type    = string
-  default = "afd93d0afb6ee89db7dd34742ab126caeb11989f17dcf83dda901780e932ff9ef9a2d89d208b248f4966eb847999a4277213e0b623aded204230a3cd019b940b"
+  default = "1882f9a23c9800e5dba3dbd2cf0126f552605c915433ef4c5bb672610a4ca3a4"
 }
 
 variable "iso_url" {
   type    = string
-  default = "https://cdn.openbsd.org/pub/OpenBSD/6.9/amd64/install69.iso"
+  default = "https://cdn.openbsd.org/pub/OpenBSD/7.0/amd64/install70.iso"
 }
 
 variable "shutdown_cmd" {
@@ -144,7 +144,7 @@ source "hyperv-iso" "openbsd-hv" {
 # QEMU
 #
 source "qemu" "openbsd-qu" {
-  boot_command        = ["<wait5>S<enter><wait5>", "dhclient vio0<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command        = ["<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait           = "40s"
   communicator        = "ssh"
   cpus                = "${var.vm_cpus}"
@@ -175,7 +175,7 @@ source "qemu" "openbsd-qu" {
 # VirtualBox
 #
 source "virtualbox-iso" "openbsd-vb" {
-  boot_command         = ["S<enter><wait>", "dhclient em0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command         = ["S<enter><wait>", "ifconfig em0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait            = "20s"
   communicator         = "ssh"
   cpus                 = "${var.vm_cpus}"
@@ -206,7 +206,7 @@ source "virtualbox-iso" "openbsd-vb" {
 # VMWare
 #
 source "vmware-iso" "openbsd-vw" {
-  boot_command     = ["S<enter><wait>", "dhclient vio0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command     = ["S<enter><wait>", "ifconfig vio0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait        = "30s"
   communicator     = "ssh"
   cpus             = "${var.vm_cpus}"

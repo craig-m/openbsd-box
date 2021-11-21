@@ -61,6 +61,7 @@ ls -lah -- boxes/
 vagrant validate || { echo "ERROR in Vagrantfile"; exit 1; }
 
 # Start vagrant VM
+echo "[*] starting VM"
 vagrant status | grep "not created" -q || { echo "ERROR created already"; exit 1; }
 
 case "$1" in

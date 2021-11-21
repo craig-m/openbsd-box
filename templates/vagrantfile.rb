@@ -2,11 +2,10 @@
 # OpenBSD Vagrantfile template
 #
 
-# current 2.2.18
-Vagrant.require_version ">= 2.2.16"
+# current 2.2.19
+Vagrant.require_version ">= 2.2.18"
 
 # vagrant options
-VAGRANT_API_VER = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = 1
 
 
