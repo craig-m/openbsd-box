@@ -116,4 +116,3 @@ logger "setup.sh finished"
 
 # Finished
 sleep 5
-sync

@@ -2,9 +2,8 @@
 # OpenBSD packer HCL
 #
 
-# current 1.7.4
 packer {
-  required_version = ">= 1.7.2"
+  required_version = ">= 1.8.0"
 }
 
 
@@ -25,12 +24,12 @@ variable "http_dir" {
 
 variable "iso_checksum" {
   type    = string
-  default = "1882f9a23c9800e5dba3dbd2cf0126f552605c915433ef4c5bb672610a4ca3a4"
+  default = "d3a7c5b9bf890bc404304a1c96f9ee72e1d9bbcf9cc849c1133bdb0d67843396"
 }
 
 variable "iso_url" {
   type    = string
-  default = "https://cdn.openbsd.org/pub/OpenBSD/7.0/amd64/install70.iso"
+  default = "https://cdn.openbsd.org/pub/OpenBSD/7.1/amd64/install71.iso"
 }
 
 variable "shutdown_cmd" {
@@ -247,8 +246,8 @@ build {
   provisioner "shell" {
     expect_disconnect = false
     inline            = ["doas -n /opt/update.sh"]
-    pause_before      = "30s"
-    timeout           = "10m0s"
+    pause_before      = "60s"
+    timeout           = "20m0s"
   }
 
   provisioner "shell" {

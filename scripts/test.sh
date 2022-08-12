@@ -29,7 +29,13 @@ check_service(){
     done
 }
 
-check_service sshd ntpd cron smtpd pflogd xenodm
+check_service \
+    sshd \
+    ntpd \
+    cron \
+    smtpd \
+    pflogd \
+    xenodm
 
 
 # check for installed packages
@@ -47,7 +53,12 @@ check_pkginst(){
     done
 }
 
-check_pkginst rsync curl xz vim git
+check_pkginst \
+    rsync \
+    curl \
+    xz \
+    vim \
+    git
 
 
 # wait if rc.firsttime exists

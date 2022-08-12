@@ -2,6 +2,8 @@
 # OpenBSD Vagrant box
 #
 
+Vagrant.require_version ">= 2.2.0"
+
 # shared folder
 MY_VM_CODE = "./vmcode/"
 CODE_MNT = "/opt/vmcode"

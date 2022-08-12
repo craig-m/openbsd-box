@@ -42,7 +42,7 @@ esac
 # vars
 packerinput="openbsd.pkr.hcl"
 
-export PACKER_LOG=2
+export PACKER_LOG=3
 export PACKER_LOG_PATH=packer.log
 
 echo "[*] using config: ${packerinput}"

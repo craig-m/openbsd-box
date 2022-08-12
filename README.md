@@ -27,7 +27,7 @@ Windows (powershell):
 $env:PACKER_LOG=1
 ```
 
-Mac/Linux/BSD:
+Mac, Linux, BSD:
 
 ```shell
 export PACKER_LOG=1
@@ -142,6 +142,7 @@ man security
 
 **OpenBSD Docs**
 * https://www.openbsd.org/faq/
+* https://man.openbsd.org/
 
 **guides**
 * https://openbsdjumpstart.org/
@@ -150,10 +151,3 @@ man security
 **github**
 * https://github.com/ligurio/awesome-openbsd
 * https://github.com/sirredbeard/Awesome-UNIX
-
-**packer projects**
-* https://github.com/upperstream/packer-templates/tree/master/openbsd
-* https://github.com/lavabit/robox
-
-**packer plugins**
-* https://github.com/double-p/vagrant-openbsd
