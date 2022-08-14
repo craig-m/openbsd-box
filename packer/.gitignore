@@ -1,0 +1,4 @@
+*.log
+boxes/
+packer_cache/
+output-openbsd-*/

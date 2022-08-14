@@ -2,7 +2,7 @@
 
 # run by Vagrant on provision/up
 
-echo "vagrant.sh running"
+echo "vagrant.sh running" | logger
 
 # stop mail server
 # rcctl stop smtpd
@@ -12,5 +12,4 @@ echo "vagrant.sh running"
 rcctl stop sndiod
 rcctl disable sndiod
 
-echo "vagrant.sh finished"
-logger "vagrant.sh finished"
+echo "vagrant.sh finished" | logger

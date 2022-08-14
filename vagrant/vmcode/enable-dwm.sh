@@ -10,7 +10,10 @@
 
 echo "installing dwm"
 
-doas pkg_add -I dwm dmenu st
+# install packages
+doas pkg_add -I dwm \
+    dmenu \
+    st
 
 cat << EOF > ~/.xinitrc
 st &

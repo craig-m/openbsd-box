@@ -7,7 +7,7 @@
             "label": "validate-packer",
             "type": "shell",
             "command": "packer",
-            "args": ["validate", "-syntax-only", "openbsd.pkr.hcl"],
+            "args": ["validate", "-syntax-only", "./packer/openbsd.pkr.hcl"],
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -18,7 +18,7 @@
             "label": "validate-vagrant",
             "type": "shell",
             "command": "vagrant",
-            "args": ["validate", "Vagrantfile"],
+            "args": ["validate", "./Vagrant/Vagrantfile"],
             "problemMatcher": [],
         },
         {
@@ -80,7 +80,7 @@
             "label": "inspect",
             "type": "shell",
             "command": "packer",
-            "args": ["inspect", "openbsd.pkr.hcl"],
+            "args": ["inspect", "./packer/openbsd.pkr.hcl"],
             "problemMatcher": []
         }
     ]

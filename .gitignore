@@ -2,16 +2,8 @@
 #
 *.log
 .vagrant/
-boxes/
-output-openbsd-hv/
-output-openbsd-vb/
-output-openbsd-qu/
-temp/
-packer_cache/
 local/*
 !local/.gitkeep
-variables.pkr.hcl
-variables.json
 #
 # MacOS
 #

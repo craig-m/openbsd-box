@@ -29,6 +29,11 @@ $env:PACKER_LOG = 2
 $env:PACKER_LOG_PATH = "packer.log"
 
 
+#
+# Packer
+#
+Set-Location packer/
+
 # Validate packer input
 try {
     Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$scriptloc/$packerinput" packer
@@ -53,6 +58,22 @@ if (Test-Path ./boxes/OpenBSD.box) {
     Write-Host "Box did not get created."
     exit 1;
 }
+
+# add box to local vagrant cache
+try {
+    Start-Process -NoNewWindow -Wait -ArgumentList 'box', "add", "boxes/OpenBSD.box", "--name", "OpenBSD.box" vagrant
+} catch {
+    Write-Host "ERROR adding box"
+    exit 1;
+}
+
+Set-Location ../
+
+
+#
+# Vagrant
+#
+Set-Location vagrant/
 
 # Validate Vagrantfile
 try {

@@ -9,7 +9,6 @@ packer {
 
 #
 # variables
-# https://www.packer.io/docs/templates/hcl_templates/variables#type-constraints
 #
 
 variable "headless" {
@@ -49,7 +48,7 @@ variable "ssh_timeout" {
 
 variable "ssh_user_name" {
   type    = string
-  default = "puffy"
+  default = "bsduser"
 }
 
 variable "ssh_user_pass" {
@@ -102,11 +101,10 @@ variable "vm_nic_mac" {
 
 #
 # source blocks
-# https://www.packer.io/docs/templates/hcl_templates/blocks/source
 #
 
 #
-# Hyper-V
+# -- Hyper-V --
 #
 source "hyperv-iso" "openbsd-hv" {
   boot_command                     = ["S<enter><wait>", "dhclient hvn0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
@@ -140,7 +138,7 @@ source "hyperv-iso" "openbsd-hv" {
 }
 
 #
-# QEMU
+# -- QEMU --
 #
 source "qemu" "openbsd-qu" {
   boot_command        = ["<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
@@ -171,7 +169,7 @@ source "qemu" "openbsd-qu" {
 }
 
 #
-# VirtualBox
+# -- Virtual Box --
 #
 source "virtualbox-iso" "openbsd-vb" {
   boot_command         = ["S<enter><wait>", "ifconfig em0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
@@ -202,7 +200,7 @@ source "virtualbox-iso" "openbsd-vb" {
 }
 
 #
-# VMWare
+# -- VMWare --
 #
 source "vmware-iso" "openbsd-vw" {
   boot_command     = ["S<enter><wait>", "ifconfig vio0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
@@ -221,7 +219,7 @@ source "vmware-iso" "openbsd-vw" {
   shutdown_command = "${var.shutdown_cmd}"
   ssh_password     = "${var.ssh_user_pass}"
   ssh_port         = "${var.ssh_port}"
-  ssh_timeout      = "7200s"
+  ssh_timeout      = "${var.ssh_timeout}"
   ssh_username     = "${var.ssh_user_name}"
   vm_name          = "openbsd-vw"
   vmx_data = {
@@ -237,7 +235,6 @@ source "vmware-iso" "openbsd-vw" {
 
 #
 # build block
-# https://www.packer.io/docs/templates/hcl_templates/blocks/build
 #
 
 build {
@@ -258,11 +255,17 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars  = ["iso_checksum=${var.iso_checksum}", "iso_url=${var.iso_url}"]
+    execute_command   = "doas ksh '{{ .Path }}'"
+    expect_disconnect = false
+    pause_before      = "30s"
+    scripts           = ["packer.sh"]
+  }
+
+  provisioner "shell" {
     execute_command   = "ksh '{{ .Path }}'"
     expect_disconnect = false
     pause_before      = "30s"
-    scripts           = ["scripts/test.sh"]
+    scripts           = ["test.sh"]
   }
 
   post-processor "artifice" {
@@ -277,7 +280,7 @@ build {
   post-processor "vagrant" {
     keep_input_artifact  = true
     compression_level    = 0
-    include              = ["templates/info.json", "scripts/test.sh"]
+    include              = ["templates/info.json", "test.sh"]
     output               = "boxes/OpenBSD.box"
     vagrantfile_template = "templates/vagrantfile.rb"
     vagrantfile_template_generated = false

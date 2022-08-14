@@ -7,13 +7,14 @@
 set -e
 set -x
 
-pkgsrc_download="pkgsrc-2021Q2.tar.xz"
-pkgsrc_tar_sha="c8cf81e472de091e2b1a8ec608810487e256edd9"
+pkgsrc_download="pkgsrc-2022Q2.tar.xz"
+pkgsrc_tar_sha="470239000812423ced0d183c8ac2b63c68c5ae35"
 
 pkg_src_ver=${pkgsrc_download##pkgsrc-}
 pkg_src_ver=${pkg_src_ver%%.tar.xz}
 
 echo "Installing Pkgsrc $pkg_src_ver"
+
 
 bmake_inst(){
     bmake
@@ -21,10 +22,10 @@ bmake_inst(){
     bmake install
 }
 
+
 # get pkgsrc if missing
 if test -e "$HOME/$pkgsrc_download"; then
     echo "have $pkgsrc_download already: "
-    ls -lah -- $HOME/$pkgsrc_download
 else
     echo "Missing. Will download pkgsrc snapshot."
     cd $HOME
@@ -39,6 +40,7 @@ else
         exit 1
     fi
 fi
+ls -lah -- $HOME/$pkgsrc_download
 
 
 # uncrompress

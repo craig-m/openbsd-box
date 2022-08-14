@@ -1,4 +1,4 @@
-# OpenBSD-box
+# OpenBSD-Box
 
 ![alt text](docs/puf150X129.gif "Puffy")
 
@@ -13,6 +13,7 @@ Packer will download the OpenBSD installation media, [stable](https://www.openbs
 Check the packer [HCL](https://github.com/hashicorp/hcl):
 
 ```shell
+cd packer
 packer validate openbsd.pkr.hcl
 packer inspect openbsd.pkr.hcl
 ```
@@ -24,13 +25,13 @@ Logging is set by changing this environment variable, if anything goes wrong ver
 Windows (powershell):
 
 ```shell
-$env:PACKER_LOG=1
+$env:PACKER_LOG=4
 ```
 
 Mac, Linux, BSD:
 
 ```shell
-export PACKER_LOG=1
+export PACKER_LOG=4
 ```
 
 You can use the env var `PACKER_LOG_PATH=/tmp/packer.log` to set a log file.
@@ -87,9 +88,11 @@ Vmware needs testing still.
 
 Vagrant is a tool for managing portable virtual machines, it's a wrapper on virtualization.
 
-This imports the Box we just made and will then create a VM from it:
+This imports the Box we just made with Packer and will then create a VM from it:
 
 ```shell
+vagrant box add boxes/OpenBSD.box --name OpenBSD.box
+cd ../vagrant
 vagrant validate Vagrantfile
 vagrant up
 ```
@@ -112,7 +115,7 @@ Remove everything when finished:
 ```shell
 exit
 vagrant destroy
-vagrant box remove openbsd
+vagrant box remove OpenBSD.box
 ```
 
 ## scripts

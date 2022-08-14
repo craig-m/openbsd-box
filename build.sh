@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "[*] Building and starting OpenBSD box."
 
 # no root use
@@ -6,6 +7,7 @@ if [[ root = "$USER" ]]; then
   echo "Error: do not run as root";
   exit 1;
 fi
+
 
 # script input flags
 case "$1" in
@@ -39,6 +41,7 @@ case "$1" in
     ;;
 esac
 
+
 # vars
 packerinput="openbsd.pkr.hcl"
 
@@ -48,21 +51,39 @@ export PACKER_LOG_PATH=packer.log
 echo "[*] using config: ${packerinput}"
 
 
+#
+# Packer
+#
+cd packer/
+
 # Validate packer input
 packer validate -syntax-only ${packerinput} || { echo "ERROR validating ${packerinput}"; exit 1; }
 
 # Build the box
 packer build -only=${packbldtype} ${packerinput} || { echo "ERROR packer build failed"; exit 1; }
 
+# list build files
 echo "------ box files ------"
 ls -lah -- boxes/
 
+# add box to local vagrant cache
+vagrant box add boxes/OpenBSD.box --name OpenBSD.box || { echo "ERROR vagrant add box"; exit 1; }
+
+cd ..
+
+
+#
+# Vagrant
+#
+cd vagrant/
+
 # Validate Vagrantfile
-vagrant validate || { echo "ERROR in Vagrantfile"; exit 1; }
+vagrant validate Vagrantfile || { echo "ERROR in Vagrantfile"; exit 1; }
 
 # Start vagrant VM
 echo "[*] starting VM"
 vagrant status | grep "not created" -q || { echo "ERROR created already"; exit 1; }
+
 
 case "$1" in
   "-hv")
@@ -90,5 +111,6 @@ case "$1" in
     exit 1
     ;;
 esac
+
 
 echo "[*] Finished build script."

@@ -2,7 +2,6 @@
 # OpenBSD Vagrantfile template
 #
 
-# current 2.2.19
 Vagrant.require_version ">= 2.2.18"
 
 # vagrant options
