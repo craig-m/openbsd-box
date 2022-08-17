@@ -1,5 +1,9 @@
 #!/bin/ksh
 
+echo "packer.sh running" | logger
+
 dd if=/dev/zero of=/EMPTY bs=1M || true
-rm -f /EMPTY
+rm -vf /EMPTY
 sync
+
+echo "packer.sh finished" | logger

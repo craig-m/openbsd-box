@@ -2,7 +2,7 @@
 
 echo "[*] Building and starting OpenBSD box."
 
-# no root use
+# do not use root
 if [[ root = "$USER" ]]; then
   echo "Error: do not run as root";
   exit 1;
@@ -47,6 +47,7 @@ packerinput="openbsd.pkr.hcl"
 
 export PACKER_LOG=3
 export PACKER_LOG_PATH=packer.log
+export PKR_VAR_version="v7.1_b001"
 
 echo "[*] using config: ${packerinput}"
 
@@ -54,7 +55,7 @@ echo "[*] using config: ${packerinput}"
 #
 # Packer
 #
-cd packer/
+pushd packer/
 
 # Validate packer input
 packer validate -syntax-only ${packerinput} || { echo "ERROR validating ${packerinput}"; exit 1; }
@@ -69,13 +70,13 @@ ls -lah -- boxes/
 # add box to local vagrant cache
 vagrant box add boxes/OpenBSD.box --name OpenBSD.box || { echo "ERROR vagrant add box"; exit 1; }
 
-cd ..
+popd
 
 
 #
 # Vagrant
 #
-cd vagrant/
+pushd vagrant/
 
 # Validate Vagrantfile
 vagrant validate Vagrantfile || { echo "ERROR in Vagrantfile"; exit 1; }
@@ -89,21 +90,25 @@ case "$1" in
   "-hv")
     # Hyper-V
     vagrant up --provider=hyperv
-    vagrant ssh --command "uptime" --machine-readable
+    vagrant ssh --command "uptime" --machine-readable || { echo "ERROR starting VM"; exit 1; }
+    echo "[*] Started VM on Hyper-V"
     ;;
   "-qu")
     # QEMU
-    #vagrant up --provider=libvirt
+    echo "start with: "
+    echo "vagrant up --provider=libvirt"
     ;;
   "-vw")
-    # vmware
+    # VMWare
     vagrant up
-    vagrant ssh --command "uptime" --machine-readable
+    vagrant ssh --command "uptime" --machine-readable || { echo "ERROR starting VM"; exit 1; }
+    echo "[*] Started VM on VMWare"
     ;;
   "-vb")
-    # VirtualBox
+    # Virtual Box
     vagrant up --provider=virtualbox
-    vagrant ssh --command "uptime" --machine-readable
+    vagrant ssh --command "uptime" --machine-readable || { echo "ERROR starting VM"; exit 1; }
+    echo "[*] Started VM on Virtual Box"
     ;;
   *)
     packbldtype=""
@@ -112,5 +117,6 @@ case "$1" in
     ;;
 esac
 
+popd
 
-echo "[*] Finished build script."
+echo -e "\n[*] Finished build script."

@@ -118,6 +118,8 @@ chmod +x /opt/update.sh
 
 # Finished
 touch /opt/.setup.sh
+echo ${bversion} > /opt/.setup.sh
+
 logger "setup.sh finished"
 
 sleep 5

@@ -4,6 +4,7 @@ param (
 
 #requires -runasadministrator
 
+
 # check input
 If ( $packbldtype -eq 'hv' )
 {
@@ -18,6 +19,7 @@ If ( $packbldtype -eq 'hv' )
     exit 1
 }
 
+
 Write-Host "[*] Building and starting OpenBSD box."
 Write-Host "[*] type: $packbldtype2"
 $scriptloc = Get-Location
@@ -27,6 +29,7 @@ Write-Host "[*] located in: $scriptloc"
 $packerinput = "openbsd.pkr.hcl"
 $env:PACKER_LOG = 2
 $env:PACKER_LOG_PATH = "packer.log"
+$env:PKR_VAR_version="v7.1_b001"
 
 
 #
@@ -36,7 +39,7 @@ Set-Location packer/
 
 # Validate packer input
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$scriptloc/$packerinput" packer
+    Start-Process -NoNewWindow -Wait -ArgumentList 'validate', '-syntax-only', "$packerinput" packer
 } catch {
     Write-Host "ERROR validating $packerinput"
     exit 1;
@@ -44,7 +47,7 @@ try {
 
 # Build the box
 try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "-parallel-builds=1", "$scriptloc/$packerinput" packer
+    Start-Process -NoNewWindow -Wait -ArgumentList 'build', "-only=$packbldtype2", "-parallel-builds=1", "$packerinput" packer
 } catch {
     Write-Host "ERROR building"
     exit 1;

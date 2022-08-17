@@ -120,8 +120,17 @@ source "hyperv-iso" "openbsd-hv" {
   guest_additions_mode             = "disable"
   headless                         = "${var.headless}"
   http_content                     = {
-    "/install.conf"                = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
-    "/setup.sh"                    = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+    "/install.conf"                = templatefile( 
+      "./templates/install.conf.pkrtpl", {
+        my_pass = var.ssh_user_pass,
+        my_user = var.ssh_user_name,
+        root_pass = var.ssh_root_pass
+      } )
+    "/setup.sh"                    = templatefile( 
+      "./templates/setup.sh.pkrtpl", { 
+        newuser = var.ssh_user_name,
+        bversion = var.version
+    } )
   }
   iso_checksum                     = "${var.iso_checksum}"
   iso_url                          = "${var.iso_url}"
@@ -150,9 +159,18 @@ source "qemu" "openbsd-qu" {
   disk_size           = "${var.vm_disk}"
   format              = "qcow2"
   headless            = "${var.headless}"
-  http_content        = {
-    "/install.conf"   = templatefile( "./templates/install-qemu.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
-    "/setup.sh"       = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  http_content                     = {
+    "/install.conf"                = templatefile( 
+      "./templates/install.conf.pkrtpl", {
+        my_pass = var.ssh_user_pass,
+        my_user = var.ssh_user_name,
+        root_pass = var.ssh_root_pass
+      } )
+    "/setup.sh"                    = templatefile( 
+      "./templates/setup.sh.pkrtpl", {
+        newuser = var.ssh_user_name,
+        bversion = var.version
+    } )
   }
   iso_checksum        = "${var.iso_checksum}"
   iso_url             = "${var.iso_url}"
@@ -180,9 +198,18 @@ source "virtualbox-iso" "openbsd-vb" {
   guest_additions_mode = "disable"
   guest_os_type        = "OpenBSD_64"
   headless             = "${var.headless}"
-  http_content         = {
-    "/install.conf"    = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
-    "/setup.sh"        = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  http_content                     = {
+    "/install.conf"                = templatefile( 
+      "./templates/install.conf.pkrtpl", {
+        my_pass = var.ssh_user_pass,
+        my_user = var.ssh_user_name,
+        root_pass = var.ssh_root_pass
+      } )
+    "/setup.sh"                    = templatefile( 
+      "./templates/setup.sh.pkrtpl", {
+        newuser = var.ssh_user_name,
+        bversion = var.version
+    } )
   }
   iso_checksum         = "${var.iso_checksum}"
   iso_url              = "${var.iso_url}"
@@ -209,9 +236,18 @@ source "vmware-iso" "openbsd-vw" {
   cpus             = "${var.vm_cpus}"
   disk_size        = "${var.vm_disk}"
   headless         = "${var.headless}"
-  http_content       = {
-    "/install.conf"  = templatefile( "./templates/install.conf.pkrtpl", { my_pass = var.ssh_user_pass, my_user = var.ssh_user_name, root_pass = var.ssh_root_pass } )
-    "/setup.sh"      = templatefile( "./templates/setup.sh.pkrtpl", { newuser = var.ssh_user_name } )
+  http_content                     = {
+    "/install.conf"                = templatefile( 
+      "./templates/install.conf.pkrtpl", {
+        my_pass = var.ssh_user_pass,
+        my_user = var.ssh_user_name,
+        root_pass = var.ssh_root_pass
+      } )
+    "/setup.sh"                    = templatefile( 
+      "./templates/setup.sh.pkrtpl", {
+        newuser = var.ssh_user_name,
+        bversion = var.version
+    } )
   }
   iso_checksum     = "${var.iso_checksum}"
   iso_url          = "${var.iso_url}"
