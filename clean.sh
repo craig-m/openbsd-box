@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env sh
 
 # note: will not remove openbsd install iso from packer_cache
 

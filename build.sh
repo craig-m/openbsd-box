@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env sh
 
 echo "[*] Building and starting OpenBSD box."
 

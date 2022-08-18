@@ -11,14 +11,9 @@ packer {
 # variables
 #
 
-variable "headless" {
+variable "iso_url" {
   type    = string
-  default = "false"
-}
-
-variable "http_dir" {
-  type    = string
-  default = "packer-http/"
+  default = "https://cdn.openbsd.org/pub/OpenBSD/7.1/amd64/install71.iso"
 }
 
 variable "iso_checksum" {
@@ -26,9 +21,9 @@ variable "iso_checksum" {
   default = "d3a7c5b9bf890bc404304a1c96f9ee72e1d9bbcf9cc849c1133bdb0d67843396"
 }
 
-variable "iso_url" {
+variable "headless" {
   type    = string
-  default = "https://cdn.openbsd.org/pub/OpenBSD/7.1/amd64/install71.iso"
+  default = "false"
 }
 
 variable "shutdown_cmd" {
