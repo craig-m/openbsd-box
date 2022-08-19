@@ -145,7 +145,7 @@ source "hyperv-iso" "openbsd-hv" {
 # -- QEMU --
 #
 source "qemu" "openbsd-qu" {
-  boot_command        = ["<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command        = ["<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait           = "40s"
   communicator        = "ssh"
   cpus                = "${var.vm_cpus}"
@@ -156,7 +156,7 @@ source "qemu" "openbsd-qu" {
   headless            = "${var.headless}"
   http_content                     = {
     "/install.conf"                = templatefile( 
-      "./templates/install.conf.pkrtpl", {
+      "./templates/install-qemu.conf.pkrtpl", {
         my_pass = var.ssh_user_pass,
         my_user = var.ssh_user_name,
         root_pass = var.ssh_root_pass
