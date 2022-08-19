@@ -77,8 +77,7 @@ echo "permit nopass ${newuser}" >> /etc/doas.conf
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key" >> /home/${newuser}/.ssh/authorized_keys
 
 
-# create update/patch script
-# packer will run this later
+# create update/patch script - packer will run this later
 cat <<EOF > /opt/update.sh
 #!/bin/ksh
 # Apply all updates to OpenBSD
@@ -94,6 +93,14 @@ while test ! -e /opt/.setup.sh; do
     sleep 10
 done
 
+# wait for /usr/libexec/reorder_kernel to finish,
+# if running, so that syspatch can run
+
+while pgrep -f reorder_kernel; do
+    echo "wait for reorder_kernel";
+    sleep 5;
+done
+
 # update packages
 pkg_add -uUv
 
@@ -102,12 +109,12 @@ fw_update
 
 # patch OpenBSD
 syspatch
+sleep 1
 
-# if syspatch updates itself, it needs to run
-# again to install missing patches
+# if syspatch updates itself, it needs to run again to install missing patches
 syspatch
 
-sleep 3
+sleep 2
 sync
 
 logger "update.sh finished"

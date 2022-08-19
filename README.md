@@ -2,7 +2,7 @@
 
 ![alt text](docs/puf150X129.gif "Puffy")
 
-An [OpenBSD](https://www.openbsd.org/) learning / play / dev [VM](https://en.wikipedia.org/wiki/Virtual_machine) to be built and run from your own desktop.
+An [OpenBSD](https://www.openbsd.org/) learning/dev [VM](https://en.wikipedia.org/wiki/Virtual_machine) to be built and run from your own desktop.
 
 Created by [Packer](https://www.packer.io/) and run by [Vagrant](https://www.vagrantup.com/).
 
@@ -134,7 +134,7 @@ For better or worse, you can install [Powershell](https://docs.microsoft.com/en-
 
 Win 10 includes Windows [Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) which Vagrant also [supports WSL](https://www.vagrantup.com/docs/other/wsl).
 
-## links
+## Doco
 
 Useful documentation + code + guides
 
@@ -146,11 +146,3 @@ man security
 **OpenBSD Docs**
 * https://www.openbsd.org/faq/
 * https://man.openbsd.org/
-
-**guides**
-* https://openbsdjumpstart.org/
-* https://why-openbsd.rocks/fact/
-
-**github**
-* https://github.com/ligurio/awesome-openbsd
-* https://github.com/sirredbeard/Awesome-UNIX
