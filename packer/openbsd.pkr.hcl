@@ -102,7 +102,7 @@ variable "vm_nic_mac" {
 # -- Hyper-V --
 #
 source "hyperv-iso" "openbsd-hv" {
-  boot_command                     = ["S<enter><wait>", "dhclient hvn0<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command                     = ["S<enter><wait>", "ifconfig em0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
   boot_wait                        = "40s"
   communicator                     = "ssh"
   cpus                             = "${var.vm_cpus}"
