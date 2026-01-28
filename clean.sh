@@ -1,10 +1,8 @@
 #!/usr/bin/env sh
 
-# note: will not remove openbsd install iso from packer_cache
-
 echo "[*] cleaning up"
 
-if [[ root = "$USER" ]]; then
+if [ root = "$USER" ]; then
   echo "Error: do not run as root";
   exit 1;
 fi

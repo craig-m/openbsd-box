@@ -7,18 +7,37 @@ packer {
 }
 
 
+packer {
+  required_version = ">= 1.8.4"
+  required_plugins {
+    vagrant = {
+      source  = "github.com/hashicorp/vagrant"
+      version = "~> 1"
+    }
+    virtualbox = {
+      version = ">= 1.1.1"
+      source  = "github.com/hashicorp/virtualbox"
+    }
+    qemu = {
+      version = ">= 1.1.3"
+      source  = "github.com/hashicorp/qemu"
+    }
+  }
+}
+
+
 #
 # variables
 #
 
 variable "iso_url" {
   type    = string
-  default = "https://cdn.openbsd.org/pub/OpenBSD/7.1/amd64/install71.iso"
+  default = "https://mirror.aarnet.edu.au/pub/OpenBSD/7.8/amd64/install78.iso"
 }
 
 variable "iso_checksum" {
   type    = string
-  default = "d3a7c5b9bf890bc404304a1c96f9ee72e1d9bbcf9cc849c1133bdb0d67843396"
+  default = "a228d0a1ef558b4d9ec84c698f0d3ffd13cd38c64149487cba0f1ad873be07b2"
 }
 
 variable "headless" {
@@ -65,7 +84,7 @@ variable "version" {
 
 variable "vm_boot_cmd" {
   type    = string
-  default = "/install -a -f /install.conf -m install && chroot /mnt < /setup.sh && reboot<wait><enter>"
+  default = "/install -a -f /install.conf && chroot /mnt < /setup.sh && reboot<wait><enter>"
 }
 
 variable "vm_boot_setupsh" {
@@ -75,7 +94,7 @@ variable "vm_boot_setupsh" {
 
 variable "vm_cpus" {
   type    = string
-  default = "2"
+  default = "4"
 }
 
 variable "vm_disk" {
@@ -99,53 +118,12 @@ variable "vm_nic_mac" {
 #
 
 #
-# -- Hyper-V --
-#
-source "hyperv-iso" "openbsd-hv" {
-  boot_command                     = ["S<enter><wait>", "ifconfig em0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
-  boot_wait                        = "40s"
-  communicator                     = "ssh"
-  cpus                             = "${var.vm_cpus}"
-  disk_size                        = "${var.vm_disk}"
-  enable_dynamic_memory            = false
-  enable_mac_spoofing              = true
-  enable_secure_boot               = false
-  enable_virtualization_extensions = true
-  generation                       = 1
-  guest_additions_mode             = "disable"
-  headless                         = "${var.headless}"
-  http_content                     = {
-    "/install.conf"                = templatefile( 
-      "./templates/install.conf.pkrtpl", {
-        my_pass = var.ssh_user_pass,
-        my_user = var.ssh_user_name,
-        root_pass = var.ssh_root_pass
-      } )
-    "/setup.sh"                    = templatefile( 
-      "./templates/setup.sh.pkrtpl", { 
-        newuser = var.ssh_user_name,
-        bversion = var.version
-    } )
-  }
-  iso_checksum                     = "${var.iso_checksum}"
-  iso_url                          = "${var.iso_url}"
-  mac_address                      = "${var.vm_nic_mac}"
-  memory                           = "${var.vm_mem}"
-  shutdown_command                 = "${var.shutdown_cmd}"
-  skip_compaction                  = false
-  ssh_password                     = "${var.ssh_user_pass}"
-  ssh_port                         = "${var.ssh_port}"
-  ssh_timeout                      = "${var.ssh_timeout}"
-  ssh_username                     = "${var.ssh_user_name}"
-  switch_name                      = "PackerSwitch"
-  vm_name                          = "openbsd-hv"
-}
-
-#
 # -- QEMU --
 #
 source "qemu" "openbsd-qu" {
-  boot_command        = ["<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait5>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command        = [ "<wait5>S<enter><wait5>", "ifconfig vio0 inet autoconf<enter><wait10>",
+                        "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait5>",
+                        "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}" ]
   boot_wait           = "40s"
   communicator        = "ssh"
   cpus                = "${var.vm_cpus}"
@@ -185,7 +163,10 @@ source "qemu" "openbsd-qu" {
 # -- Virtual Box --
 #
 source "virtualbox-iso" "openbsd-vb" {
-  boot_command         = ["S<enter><wait>", "ifconfig em0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
+  boot_command         = [ "S<enter><wait>",
+                        "ifconfig em0 inet autoconf<enter><wait5>",
+                        "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.conf<enter><wait>",
+                        "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}" ]
   boot_wait            = "20s"
   communicator         = "ssh"
   cpus                 = "${var.vm_cpus}"
@@ -214,7 +195,9 @@ source "virtualbox-iso" "openbsd-vb" {
   ssh_port             = "${var.ssh_port}"
   ssh_timeout          = "${var.ssh_timeout}"
   ssh_username         = "${var.ssh_user_name}"
-  vboxmanage           = [["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"], ["modifyvm", "{{ .Name }}", "--natdnshostresolver1", "on"]]
+  vboxmanage           = [["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
+                          ["modifyvm", "{{ .Name }}", "--ioapic", "off"],
+                          ["modifyvm", "{{ .Name }}", "--natdnshostresolver1", "on"]]
   vm_name              = "openbsd-vb"
   vrdp_bind_address    = "127.0.0.1"
   vrdp_port_max        = 12000
@@ -222,54 +205,11 @@ source "virtualbox-iso" "openbsd-vb" {
 }
 
 #
-# -- VMWare --
-#
-source "vmware-iso" "openbsd-vw" {
-  boot_command     = ["S<enter><wait>", "ifconfig vio0 inet autoconf<enter><wait5>", "ftp -o /install.conf http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-qemu.conf<enter><wait>", "${var.vm_boot_setupsh}", "${var.vm_boot_cmd}"]
-  boot_wait        = "30s"
-  communicator     = "ssh"
-  cpus             = "${var.vm_cpus}"
-  disk_size        = "${var.vm_disk}"
-  headless         = "${var.headless}"
-  http_content                     = {
-    "/install.conf"                = templatefile( 
-      "./templates/install.conf.pkrtpl", {
-        my_pass = var.ssh_user_pass,
-        my_user = var.ssh_user_name,
-        root_pass = var.ssh_root_pass
-      } )
-    "/setup.sh"                    = templatefile( 
-      "./templates/setup.sh.pkrtpl", {
-        newuser = var.ssh_user_name,
-        bversion = var.version
-    } )
-  }
-  iso_checksum     = "${var.iso_checksum}"
-  iso_url          = "${var.iso_url}"
-  memory           = "${var.vm_mem}"
-  shutdown_command = "${var.shutdown_cmd}"
-  ssh_password     = "${var.ssh_user_pass}"
-  ssh_port         = "${var.ssh_port}"
-  ssh_timeout      = "${var.ssh_timeout}"
-  ssh_username     = "${var.ssh_user_name}"
-  vm_name          = "openbsd-vw"
-  vmx_data = {
-    "ethernet0.addressType"     = "generated"
-    "ethernet0.networkName"     = "VM Network"
-    "ethernet0.present"         = "TRUE"
-    "ethernet0.wakeOnPcktRcv"   = "FALSE"
-    "remotedisplay.vnc.enabled" = "TRUE"
-    "vhv.enable"                = "TRUE"
-  }
-}
-
-
-#
 # build block
 #
 
 build {
-  sources = ["source.hyperv-iso.openbsd-hv", "source.qemu.openbsd-qu", "source.virtualbox-iso.openbsd-vb", "source.vmware-iso.openbsd-vw"]
+  sources = ["source.qemu.openbsd-qu", "source.virtualbox-iso.openbsd-vb"]
 
   provisioner "shell" {
     expect_disconnect = false
@@ -301,11 +241,6 @@ build {
 
   post-processor "artifice" {
     files = ["output-openbsd-vb/openbsd-disk001.vmdk", "output-openbsd-vb/vbox-openbsd.ovf"]
-  }
-
-  post-processor "manifest" {
-    output     = "boxes/manifest.json"
-    strip_path = true
   }
 
   post-processor "vagrant" {

@@ -55,11 +55,7 @@ check_pkginst(){
 
 check_pkginst \
     rsync \
-    curl \
-    xz \
-    vim \
-    git
-
+    curl
 
 # wait if rc.firsttime exists
 while test -e /etc/rc.firsttime; do
