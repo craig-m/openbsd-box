@@ -35,6 +35,13 @@ cp -v /etc/X11/xenodm/Xsetup_0 /etc/X11/xenodm/.Xsetup_0.bak
 echo 'export PS1="\u@\H \W \$ "' >> /root/.profile
 echo 'export PS1="\u@\H \W \$ "' >> /home/${newuser}/.profile
 
+# Enable serial console (com0 at 115200 baud)
+# This allows console capture via virtual RS232 during crashes and fuzzing
+echo "stty com0 115200" > /etc/boot.conf
+echo "set tty com0" >> /etc/boot.conf
+# Enable com0 login in /etc/ttys
+sed -i 's|^tty00.*|tty00   "/usr/libexec/getty std.115200"   vt220  on  secure|' /etc/ttys
+
 # create .Xresources
 cat <<EOF > /home/${newuser}/.Xresources
 XTerm*faceName:Terminus*

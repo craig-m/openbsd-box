@@ -18,8 +18,8 @@
             "label": "validate-vagrant",
             "type": "shell",
             "command": "vagrant",
-            "args": ["validate", "./Vagrant/Vagrantfile"],
-            "problemMatcher": [],
+            "args": ["validate", "./vagrant/Vagrantfile"],
+            "problemMatcher": []
         },
         {
             "label": "rsync-auto",
@@ -81,6 +81,19 @@
             "type": "shell",
             "command": "packer",
             "args": ["inspect", "./packer/openbsd.pkr.hcl"],
+            "problemMatcher": []
+        },
+        {
+            "label": "console-capture",
+            "type": "shell",
+            "command": "./scripts/console-capture.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "host-setup-check",
+            "type": "shell",
+            "command": "./scripts/setup-host.sh",
+            "args": ["--check"],
             "problemMatcher": []
         }
     ]

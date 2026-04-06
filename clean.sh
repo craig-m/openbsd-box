@@ -7,16 +7,18 @@ if [ root = "$USER" ]; then
   exit 1;
 fi
 
-cd vagrant
-vagrant destroy -f
-vagrant box remove OpenBSD.box -f
-cd ../
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-cd packer/
+cd "${SCRIPT_DIR}/vagrant" || exit 1
+vagrant destroy -f
+vagrant box remove OpenBSD.box -f || true
+cd "${SCRIPT_DIR}"
+
+cd "${SCRIPT_DIR}/packer/"
 rm -rfv -- output-openbsd-*
 rm -fv packer.log
-cd ..
+cd "${SCRIPT_DIR}"
 
-rm -rfv -- builds/
+rm -rfv -- "${SCRIPT_DIR}/builds/"
 
 echo "[*] clean finished"

@@ -56,11 +56,16 @@ Vagrant.configure("2") do |config|
         # custom options
         vbox.customize ["modifyvm", :id, "--audioout", "off"]
         vbox.customize ["modifyvm", :id, "--vram", 32]
+        # Serial console (COM1 / tty00) – output captured to host file
+        vbox.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+        vbox.customize ["modifyvm", :id, "--uartmode1", "file", "/tmp/openbsd-serial.log"]
     end
 
     # --- Libvirt ---
     config.vm.provider :libvirt do |libv, override|
         libv.disk_bus = "virtio"
+        # Serial console output captured to host file
+        libv.serial :type => "file", :source => {:path => "/tmp/openbsd-serial.log"}
     end
 
     # --- VMWare ---
