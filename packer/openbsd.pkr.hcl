@@ -3,11 +3,6 @@
 #
 
 packer {
-  required_version = ">= 1.8.0"
-}
-
-
-packer {
   required_version = ">= 1.8.4"
   required_plugins {
     vagrant = {
@@ -112,6 +107,11 @@ variable "vm_mem" {
   default = "2048"
 }
 
+variable "vm_serial_log" {
+  type    = string
+  default = "/tmp/openbsd-serial.log"
+}
+
 variable "vm_nic_mac" {
   type    = string
   default = "9c0a914daaff"
@@ -162,6 +162,7 @@ source "qemu" "openbsd-qu" {
   ssh_username        = "${var.ssh_user_name}"
   use_default_display = true
   vm_name             = "openbsd-qu"
+  qemuargs            = [["-serial", "file:${var.vm_serial_log}"]]
 }
 
 #
@@ -202,7 +203,9 @@ source "virtualbox-iso" "openbsd-vb" {
   ssh_username         = "${var.ssh_user_name}"
   vboxmanage           = [["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
                           ["modifyvm", "{{ .Name }}", "--ioapic", "off"],
-                          ["modifyvm", "{{ .Name }}", "--natdnshostresolver1", "on"]]
+                          ["modifyvm", "{{ .Name }}", "--natdnshostresolver1", "on"],
+                          ["modifyvm", "{{ .Name }}", "--uart1", "0x3F8", "4"],
+                          ["modifyvm", "{{ .Name }}", "--uartmode1", "file", "${var.vm_serial_log}"]]
   vm_name              = "openbsd-vb"
   vrdp_bind_address    = "127.0.0.1"
   vrdp_port_max        = 12000
@@ -245,6 +248,7 @@ build {
   }
 
   post-processor "artifice" {
+    only  = ["virtualbox-iso.openbsd-vb"]
     files = ["output-openbsd-vb/openbsd-disk001.vmdk", "output-openbsd-vb/vbox-openbsd.ovf"]
   }
 

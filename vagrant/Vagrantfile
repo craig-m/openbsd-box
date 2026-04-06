@@ -7,6 +7,9 @@ MY_VM_CODE = "./vmcode/"
 CODE_MNT = "/opt/vmcode"
 CODE_MNT_OPT = ["dmode=775,fmode=644"]
 
+# Serial console log path on the host (set VAGRANT_SERIAL_LOG env var to override)
+SERIAL_LOG = ENV.fetch("VAGRANT_SERIAL_LOG", "/tmp/openbsd-serial.log")
+
 Vagrant.configure("2") do |config|
 
     config.vm.box = "OpenBSD.box"
@@ -15,6 +18,17 @@ Vagrant.configure("2") do |config|
     config.ssh.insert_key = true
     config.ssh.forward_agent = false
     config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # VirtualBox: enable COM1 serial port for console capture
+    config.vm.provider :virtualbox do |vbox|
+        vbox.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+        vbox.customize ["modifyvm", :id, "--uartmode1", "file", SERIAL_LOG]
+    end
+
+    # Libvirt: enable serial console to file
+    config.vm.provider :libvirt do |libv|
+        libv.serial :type => "file", :source => {:path => SERIAL_LOG}
+    end
 
     # Virtual machines
     config.vm.define "openbsd" do |mainvm|
