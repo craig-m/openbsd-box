@@ -1,6 +1,6 @@
 #!/usr/bin/env  sh
 
-echo "[*] Building and starting OpenBSD box."
+echo "[*] Building OpenBSD box."
 
 # do not use root
 if [ root = "$USER" ]; then
@@ -36,10 +36,19 @@ esac
 packerinput="openbsd.pkr.hcl"
 
 export PACKER_LOG=3
-export PACKER_LOG_PATH=packer.log
 export PKR_VAR_version="v7.1_b001"
 
+# Generate a unique build ID and output directory
+BUILD_ID="${PKR_VAR_version}_$(date +%Y%m%d_%H%M%S)"
+BUILD_DIR="builds/${BUILD_ID}"
+mkdir -p "${BUILD_DIR}"
+
+export PACKER_LOG_PATH="${BUILD_DIR}/packer.log"
+export PKR_VAR_output_dir="../${BUILD_DIR}"
+
 echo "[*] using config: ${packerinput}"
+echo "[*] build ID: ${BUILD_ID}"
+echo "[*] output dir: ${BUILD_DIR}"
 
 
 #
@@ -55,48 +64,14 @@ packer validate -syntax-only ${packerinput} || { echo "ERROR validating ${packer
 # Build the box
 packer build -only=${packbldtype} ${packerinput} || { echo "ERROR packer build failed"; exit 1; }
 
+cd ..
+
 # list build files
 echo "------ box files ------"
-ls -lah -- boxes/
+ls -lah -- "${BUILD_DIR}/"
 
-# add box to local vagrant cache
-vagrant box add boxes/OpenBSD.box --force --name OpenBSD.box || { echo "ERROR vagrant add box"; exit 1; }
-
-cd ..
-
-
-#
-# Vagrant
-#
-cd vagrant/ || exit 1
-
-# Validate Vagrantfile
-vagrant validate Vagrantfile || { echo "ERROR in Vagrantfile"; exit 1; }
-
-# Start vagrant VM
-echo "[*] starting VM"
-vagrant status | grep "not created" -q || { echo "ERROR created already"; exit 1; }
-
-
-case "$1" in
-  "-qu")
-    # QEMU
-    echo "start with: "
-    echo "vagrant up --provider=libvirt"
-    ;;
-  "-vb")
-    # Virtual Box
-    vagrant up --provider=virtualbox
-    vagrant ssh --command "uptime" --machine-readable || { echo "ERROR starting VM"; exit 1; }
-    echo "[*] Started VM on Virtual Box"
-    ;;
-  *)
-    packbldtype=""
-    echo "[.] ERROR failed to select type."
-    exit 1
-    ;;
-esac
-
-cd ..
-
+echo ""
+echo "[*] Build complete. Box stored in: ${BUILD_DIR}"
+echo "[*] To start the VM run: ./run.sh $1 ${BUILD_ID}"
+echo ""
 echo -e "\n[*] Finished build script."

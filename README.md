@@ -8,7 +8,7 @@ Created by [Packer](https://www.packer.io/) and run by [Vagrant](https://www.vag
 
 ## build OpenBSD VM
 
-Packer will download the OpenBSD installation media, [stable](https://www.openbsd.org/stable.html) `installXX.iso`, and then handle the full install start to finish - all automatically - with the end result being a reusable image to create virtual machines from.
+Packer will download the OpenBSD installation media, [stable](https://www.openbsd.org/stable.html) `installXX.iso`, and then handle the full install start to finish - all automatically - with the end result being a reusable image stored in `builds/<build-id>/`.
 
 Check the packer [HCL](https://github.com/hashicorp/hcl):
 
@@ -22,10 +22,10 @@ packer inspect openbsd.pkr.hcl
 
 Vagrant is a tool for managing portable virtual machines, it's a wrapper on virtualization.
 
-This imports the Box we just made with Packer and will then create a VM from it:
+This imports the Box from the `builds/` folder and creates a VM from it. By default the latest build is used, or you can specify a build ID:
 
 ```shell
-vagrant box add boxes/OpenBSD.box --name OpenBSD.box
+vagrant box add builds/<build-id>/OpenBSD.box --name OpenBSD.box
 cd ../vagrant
 vagrant validate Vagrantfile
 vagrant up
@@ -54,14 +54,26 @@ vagrant box remove OpenBSD.box
 
 ## scripts
 
-The steps above have been automated in `build.{sh,ps1}` and `clean.{sh,ps1}`.
+The steps above have been split into `build.{sh,ps1}` (build only) and `run.{sh,ps1}` (start VM), with `clean.{sh,ps1}` to tear everything down.
+
+Each run of the build script creates a timestamped folder under `builds/` (e.g. `builds/v7.1_b001_20240101_120000/`), so multiple builds can coexist and you can choose which one to run.
 
 ```shell
-./build.ps1
+# Step 1 – build the box (outputs to builds/<build-id>/)
+./build.sh -vb
+
+# Step 2 – start the VM (uses latest build by default)
+./run.sh -vb
+
+# Or specify a particular build
+./run.sh -vb v7.1_b001_20240101_120000
+
 vagrant ssh
 tmux
 exit
-./clean.ps1
+
+# Tear down
+./clean.sh
 ```
 
 For better or worse, you can install [Powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) on MacOS and Linux.

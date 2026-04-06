@@ -20,7 +20,7 @@ If ( $packbldtype -eq 'hv' )
 }
 
 
-Write-Host "[*] Building and starting OpenBSD box."
+Write-Host "[*] Building OpenBSD box."
 Write-Host "[*] type: $packbldtype2"
 $scriptloc = Get-Location
 Write-Host "[*] located in: $scriptloc"
@@ -28,8 +28,18 @@ Write-Host "[*] located in: $scriptloc"
 # vars
 $packerinput = "openbsd.pkr.hcl"
 $env:PACKER_LOG = 2
-$env:PACKER_LOG_PATH = "packer.log"
 $env:PKR_VAR_version="v7.1_b001"
+
+# Generate a unique build ID and output directory
+$buildId = $env:PKR_VAR_version + "_" + (Get-Date -Format "yyyyMMdd_HHmmss")
+$buildDir = "builds\$buildId"
+New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+
+$env:PACKER_LOG_PATH = "$buildDir\packer.log"
+$env:PKR_VAR_output_dir = "..\$buildDir"
+
+Write-Host "[*] build ID: $buildId"
+Write-Host "[*] output dir: $buildDir"
 
 
 #
@@ -53,51 +63,19 @@ try {
     exit 1;
 }
 
+Set-Location ../
+
 # list build files
-if (Test-Path ./boxes/OpenBSD.box) {
+if (Test-Path "$buildDir\OpenBSD.box") {
     Write-Host "------ box files ------"
-    Get-ChildItem .\boxes\
+    Get-ChildItem $buildDir
 } else {
     Write-Host "Box did not get created."
     exit 1;
 }
 
-# add box to local vagrant cache
-try {
-    Start-Process -NoNewWindow -Wait -ArgumentList 'box', "add", "boxes/OpenBSD.box", "--name", "OpenBSD.box" vagrant
-} catch {
-    Write-Host "ERROR adding box"
-    exit 1;
-}
-
-Set-Location ../
-
-
-#
-# Vagrant
-#
-Set-Location vagrant/
-
-# Validate Vagrantfile
-try {
-    Start-Process -NoNewWindow -Wait -ArgumentList "validate", ".\Vagrantfile" vagrant
-} catch {
-    Write-Host "ERROR in Vagrantfile"
-    exit 1;
-}
-
-# Start Vagrant VM
-try {
-    Start-Process -NoNewWindow -Wait -ArgumentList "up" vagrant
-} catch {
-    Write-Host "ERROR starting VM"
-    exit 1;
-}
-try {
-    Start-Process -NoNewWindow -Wait -ArgumentList "ssh", "--command", "uptime", "--machine-readable" vagrant
-} catch {
-    Write-Host "ERROR SSHing into VM"
-    exit 1;
-}
-
+Write-Host ""
+Write-Host "[*] Build complete. Box stored in: $buildDir"
+Write-Host "[*] To start the VM run:  .\run.ps1 $packbldtype $buildId"
+Write-Host ""
 Write-Host "[*] finished build script."
