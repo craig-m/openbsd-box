@@ -10,11 +10,9 @@ Set-Location ../
 
 Set-Location ./packer/
 Remove-Item -Force -Recurse -ErrorAction Ignore output-openbsd-*
-Remove-Item -Force -ErrorAction Ignore boxes/manifest.json
-Remove-Item -Force -ErrorAction Ignore boxes/manifest.json.lock
-Remove-Item -Force -ErrorAction Ignore boxes/OpenBSD.box
-Remove-Item -Force -ErrorAction Ignore boxes/openbsd-*
 Remove-Item -Force -ErrorAction Ignore packer.log
 Set-Location ../
+
+Remove-Item -Force -Recurse -ErrorAction Ignore builds\
 
 Write-Host "[*] clean finished"

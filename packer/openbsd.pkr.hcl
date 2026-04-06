@@ -82,6 +82,11 @@ variable "version" {
   default = ""
 }
 
+variable "output_dir" {
+  type    = string
+  default = "boxes"
+}
+
 variable "vm_boot_cmd" {
   type    = string
   default = "/install -a -f /install.conf && chroot /mnt < /setup.sh && reboot<wait><enter>"
@@ -247,14 +252,14 @@ build {
     keep_input_artifact  = true
     compression_level    = 0
     include              = ["templates/info.json", "test.sh"]
-    output               = "boxes/OpenBSD.box"
+    output               = "${var.output_dir}/OpenBSD.box"
     vagrantfile_template = "templates/vagrantfile.rb"
     vagrantfile_template_generated = false
   }
 
   post-processor "checksum" {
     checksum_types = ["sha512"]
-    output         = "boxes/{{ .BuildName }}.checksum"
+    output         = "${var.output_dir}/{{ .BuildName }}.checksum"
   }
 
 }

@@ -4,6 +4,7 @@
 .vagrant/
 local/*
 !local/.gitkeep
+builds/
 #
 # MacOS
 #

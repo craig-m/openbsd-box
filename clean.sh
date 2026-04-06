@@ -14,11 +14,9 @@ cd ../
 
 cd packer/
 rm -rfv -- output-openbsd-*
-rm -fv boxes/manifest.json
-rm -fv boxes/manifest.json.lock
-rm -fv boxes/OpenBSD.box
-rm -fv -- boxes/openbsd-*
 rm -fv packer.log
 cd ..
+
+rm -rfv -- builds/
 
 echo "[*] clean finished"
